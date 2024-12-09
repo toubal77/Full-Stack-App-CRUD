@@ -30,6 +30,9 @@ public class Category {
 
     private boolean ifRacine;
 
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private Integer nbrChildrends;
+
     public Category() {
         this.creationDate = new Date();
     }
@@ -93,4 +96,12 @@ public class Category {
     public void setIfRacine(boolean ifRacine) {
         this.ifRacine = ifRacine;
     }
+
+	public Integer getNbrChildrends() {
+		return nbrChildrends;
+	}
+
+	public void setNbrChildrends(Integer nbrChildrends) {
+		this.nbrChildrends = nbrChildrends;
+	}
 }

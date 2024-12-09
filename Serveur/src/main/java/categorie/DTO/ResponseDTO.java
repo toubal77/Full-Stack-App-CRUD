@@ -10,16 +10,18 @@ public class ResponseDTO {
     private String name;
     private Date creationDate;
     private ParentDTO parent;
-    private List<Category> childrens;
+    private List<ChildDTO> childrens;
     private boolean ifRacine;
+    private Integer nbrChildrens;
 
-    public ResponseDTO(Long id, String name, Date creationDate, boolean ifRacine, ParentDTO parent, List<Category> childrens) {
+    public ResponseDTO(Long id, String name, Date creationDate, boolean ifRacine, ParentDTO parent, List<ChildDTO> childrens, Integer nbrChildrens) {
         this.setId(id);
         this.setName(name);
         this.setCreationDate(creationDate);
         this.setIfRacine(ifRacine);
         this.setParent(parent);
         this.setChildrens(childrens);
+        this.setNbrChildrens(nbrChildrens);
     }
 
 	public ParentDTO getParent() {
@@ -54,11 +56,11 @@ public class ResponseDTO {
 		this.id = id;
 	}
 
-	public List<Category> getChildrens() {
-		return childrens;
+	public List<ChildDTO> getChildrens() {
+	 	return childrens;
 	}
 
-	public void setChildrens(List<Category> childrens) {
+	public void setChildrens(List<ChildDTO> childrens) {
 		this.childrens = childrens;
 	}
 
@@ -68,6 +70,14 @@ public class ResponseDTO {
 
 	public void setIfRacine(boolean ifRacine) {
 		this.ifRacine = ifRacine;
+	}
+
+	public Integer getNbrChildrens() {
+		return nbrChildrens;
+	}
+
+	public void setNbrChildrens(Integer nbrChildrens) {
+		this.nbrChildrens = nbrChildrens;
 	}
 
 }

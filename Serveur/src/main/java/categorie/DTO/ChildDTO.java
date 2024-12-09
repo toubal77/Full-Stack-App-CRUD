@@ -2,14 +2,14 @@ package categorie.DTO;
 
 import java.util.Date;
 
-public class ParentDTO {
+public class ChildDTO {
     private Long id;
     private String name;
     private Date creationDate;
     private boolean ifRacine;
     private Integer nbrChildrens;
 
-    public ParentDTO(Long id, String name, Date creationDate,boolean ifRacine, Integer nbrChildrens) {
+    public ChildDTO(Long id, String name, Date creationDate,boolean ifRacine, Integer nbrChildrens) {
         this.id = id;
         this.name = name;
         this.creationDate = creationDate;

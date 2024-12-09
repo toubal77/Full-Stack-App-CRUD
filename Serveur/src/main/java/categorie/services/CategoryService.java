@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import categorie.entities.Category;
+import categorie.DTO.ChildDTO;
 import categorie.DTO.ParentDTO;
 import categorie.DTO.ResponseDTO;
 import categorie.DTO.UpdateChildrenRequest;
@@ -35,23 +36,35 @@ public class CategoryService {
             ParentDTO parentDTO = null;
             if (category.getParent() != null) {
                 Category parent = category.getParent();
-                parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine());
+                parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(), parent.getNbrChildrends());
             }
             
             List<Category> childrens = category.getChildren();
+            List<ChildDTO> childDTOs = new ArrayList<>();
 
-            ResponseDTO responseDTO = new ResponseDTO(
-                    category.getId(),
-                    category.getName(),
-                    category.getCreationDate(),
-                    category.isIfRacine(),
-                    parentDTO, 
-                    childrens
+            for (Category child : childrens) {
+                ChildDTO childDTO = new ChildDTO(
+                    child.getId(),
+                    child.getName(),
+                    child.getCreationDate(),
+                    child.isIfRacine(),
+                    child.getNbrChildrends()
                 );
+                childDTOs.add(childDTO);
+            }
+            
+            ResponseDTO responseDTO = new ResponseDTO(
+            	    category.getId(),
+            	    category.getName(),
+            	    category.getCreationDate(),
+            	    category.isIfRacine(),
+            	    parentDTO,
+            	    childDTOs,
+            	    category.getNbrChildrends()
+            	);
 
             responseDTOs.add(responseDTO);
         }
-
         return ResponseEntity.ok(responseDTOs);
     }
 
@@ -70,18 +83,32 @@ public class CategoryService {
         ParentDTO parentDTO = null;
         if (category.getParent() != null) {
             Category parent = category.getParent();
-            parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine());
+            parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(), parent.getNbrChildrends());
         }
         
         List<Category> childrens = category.getChildren();
+        
+        List<ChildDTO> childDTOs = new ArrayList<>();
 
+        for (Category child : childrens) {
+            ChildDTO childDTO = new ChildDTO(
+                child.getId(),
+                child.getName(),
+                child.getCreationDate(),
+                child.isIfRacine(),
+                child.getNbrChildrends()
+            );
+            childDTOs.add(childDTO);
+        }
+        
         ResponseDTO responseDTO = new ResponseDTO(
             category.getId(),
             category.getName(),
             category.getCreationDate(),
             category.isIfRacine(),
             parentDTO, 
-            childrens
+            childDTOs,
+            category.getNbrChildrends()
         );
 
         return ResponseEntity.ok(responseDTO);
@@ -131,7 +158,8 @@ public class CategoryService {
             for (Long childId : request.getChildrens()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-
+                
+                parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
                 childCategory.setParent(parentCategory);
                 childCategory.setIfRacine(false);
                 categoryRepository.save(childCategory);
@@ -141,6 +169,7 @@ public class CategoryService {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
 
+                parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
                 childCategory.setParent(null);
                 childCategory.setIfRacine(true);
                 categoryRepository.save(childCategory);
@@ -149,7 +178,7 @@ public class CategoryService {
                     .body(new ApiResponse("Catégorie mise à jour avec succès : " + parentCategory.getName(), true));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("Echec de la mise à jour", false));
+                    .body(new ApiResponse("Echec de la mise à jour" + e.getMessage(), false));
         }
     }
 
