@@ -132,14 +132,22 @@ public class CategoryService {
         if (updatedCategory.getParent() != null && updatedCategory.getParent().getId() != null) {
             Optional<Category> parent = categoryRepository.findById(updatedCategory.getParent().getId());
             if (parent.isPresent()) {
+                parent.get().setNbrChildrends(parent.get().getNbrChildrends() + 1);
                 existingCategory.setParent(parent.get());
                 existingCategory.setIfRacine(false);
+                categoryRepository.save(parent.get());
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new ApiResponse("Parent non trouvé", false));
             }
         } else {
+            Category parent = existingCategory.getParent();
+            parent.setNbrChildrends(parent.getNbrChildrends() - 1);
             existingCategory.setParent(null);
+            if (parent.getNbrChildrends() == 0){
+                parent.setIfRacine(true);
+            }
+            categoryRepository.save(parent);
         }
 
         categoryRepository.save(existingCategory);
@@ -150,29 +158,38 @@ public class CategoryService {
         Category parentCategory = categoryRepository.findById(request.getId())
                 .orElseThrow(() -> new RuntimeException("Catégorie parent non trouvée"));
 
-        if (request.getChildrens() == null || request.getChildrens().isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse("La liste des enfants est vide ou non définie.", false));
-        }
+//        if (request.getChildrens() == null || request.getChildrens().isEmpty()) {
+//            return ResponseEntity.badRequest().body(new ApiResponse("La liste des enfants est vide ou non définie.", false));
+//        }
 
         try {
-            for (Long childId : request.getChildrens()) {
+            if (request.getChildrensRemoved().isEmpty()) {
+        	for (Long childId : request.getChildrens()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-                
-                parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
-                childCategory.setParent(parentCategory);
-                childCategory.setIfRacine(false);
-                categoryRepository.save(childCategory);
+                if (childCategory != null) {
+                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
+                	childCategory.setParent(parentCategory);
+                	childCategory.setIfRacine(false);
+                	categoryRepository.save(childCategory);
+                	categoryRepository.save(parentCategory);
+                }
             }
+        }
             
             for (Long childId : request.getChildrensRemoved()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-
-                parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
-                childCategory.setParent(null);
-                childCategory.setIfRacine(true);
-                categoryRepository.save(childCategory);
+                if (childCategory != null) {
+                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
+                	childCategory.setParent(null);
+                	childCategory.setIfRacine(true);
+                	categoryRepository.save(childCategory);
+                    if (parentCategory.getNbrChildrends() == 0){
+                        parentCategory.setIfRacine(true);
+                    }
+                	categoryRepository.save(parentCategory);
+                }
             }
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse("Catégorie mise à jour avec succès : " + parentCategory.getName(), true));
