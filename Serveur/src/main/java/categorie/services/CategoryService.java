@@ -28,7 +28,7 @@ public class CategoryService {
             existingCategory.setName(updatedCategory.getName());
             existingCategory.setParent(updatedCategory.getParent());
             existingCategory.setIfRacine(updatedCategory.isIfRacine());
-            existingCategory.setChildren(updatedCategory.getChildren());
+            existingCategory.setChildrens(updatedCategory.getChildren());
             return categoryRepository.save(existingCategory);
         });
     }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Category {
 
@@ -15,10 +18,12 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Category> children = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
+    @JsonBackReference
     private Category parent;
 
     private Date creationDate;
@@ -35,6 +40,7 @@ public class Category {
         this.ifRacine = ifRacine;
         this.creationDate = new Date();
     }
+
 
     public Long getId() {
         return id;
@@ -56,8 +62,12 @@ public class Category {
         return children;
     }
 
-    public void setChildren(List<Category> children) {
-        this.children = children;
+    public void setChildren(Category child) {
+        this.children.add(child);
+    }
+    
+    public void setChildrens(List<Category> children) {
+    	this.children = children;
     }
 
     public Category getParent() {
