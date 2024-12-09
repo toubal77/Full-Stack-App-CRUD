@@ -2,9 +2,9 @@ name: CI Server
 
 on:
   push:
-    branches: [master]
+    branches: [master, develop, release]
   pull_request:
-    branches: [master]
+    branches: [master, develop, release]
   workflow_dispatch:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
           cd Serveur
           mvn clean install
           
-      # - name: Display test results
-      #   run: |
-      #     cd Serveur
-      #     mvn test
+      - name: Display test results
+        run: |
+          cd Serveur
+          mvn test
