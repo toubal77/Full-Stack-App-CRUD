@@ -31,7 +31,7 @@ public class Category {
     private boolean ifRacine;
 
     @Column(nullable = false, columnDefinition = "int default 0")
-    private Integer nbrChildrends;
+    private int nbrChildrends = 0;
 
     public Category() {
         this.creationDate = new Date();
@@ -46,7 +46,7 @@ public class Category {
 
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -54,7 +54,7 @@ public class Category {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -62,7 +62,7 @@ public class Category {
     }
 
     public List<Category> getChildren() {
-        return children;
+        return this.children;
     }
 
     public void setChildren(Category child) {
@@ -74,7 +74,7 @@ public class Category {
     }
 
     public Category getParent() {
-        return parent;
+        return this.parent;
     }
 
     public void setParent(Category parent) {
@@ -82,7 +82,7 @@ public class Category {
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return this.creationDate;
     }
 
     public void setCreationDate(Date creationDate) {
@@ -90,7 +90,7 @@ public class Category {
     }
 
     public boolean isIfRacine() {
-        return ifRacine;
+        return this.ifRacine;
     }
 
     public void setIfRacine(boolean ifRacine) {
@@ -98,7 +98,7 @@ public class Category {
     }
 
 	public Integer getNbrChildrends() {
-		return nbrChildrends;
+		return this.nbrChildrends;
 	}
 
 	public void setNbrChildrends(Integer nbrChildrends) {
