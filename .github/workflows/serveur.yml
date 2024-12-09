@@ -1,0 +1,31 @@
+name: CI Server
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build and test server
+        run: |
+          cd Serveur
+          mvn clean install
+          
+      # - name: Display test results
+      #   run: |
+      #     cd Serveur
+      #     mvn test
