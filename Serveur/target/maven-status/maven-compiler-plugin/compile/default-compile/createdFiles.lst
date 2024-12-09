@@ -1,1 +1,5 @@
-com\example\demo\ServeurApplication.class
+categorie\entities\Category.class
+categorie\services\CategoryService.class
+categorie\controllers\CategoryController.class
+categorie\repositories\CategoryRepository.class
+categorie\main.class
