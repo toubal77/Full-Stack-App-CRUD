@@ -19,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<Object> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
