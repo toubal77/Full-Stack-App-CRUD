@@ -123,33 +123,44 @@ public class CategoryService {
         Category parentCategory = categoryRepository.findById(request.getId())
                 .orElseThrow(() -> new RuntimeException("Catégorie parent non trouvée"));
 
-        if (request.getChildrens() == null || request.getChildrens().isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse("La liste des enfants est vide ou non définie.", false));
-        }
+//        if (request.getChildrens() == null || request.getChildrens().isEmpty()) {
+//            return ResponseEntity.badRequest().body(new ApiResponse("La liste des enfants est vide ou non définie.", false));
+//        }
 
         try {
-            for (Long childId : request.getChildrens()) {
+            if (request.getChildrensRemoved().isEmpty()) {
+        	for (Long childId : request.getChildrens()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-
-                childCategory.setParent(parentCategory);
-                childCategory.setIfRacine(false);
-                categoryRepository.save(childCategory);
+                if (childCategory != null) {
+                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
+                	childCategory.setParent(parentCategory);
+                	childCategory.setIfRacine(false);
+                	categoryRepository.save(childCategory);
+                	categoryRepository.save(parentCategory);
+                }
             }
+        }
             
             for (Long childId : request.getChildrensRemoved()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-
-                childCategory.setParent(null);
-                childCategory.setIfRacine(true);
-                categoryRepository.save(childCategory);
+                if (childCategory != null) {
+                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
+                	childCategory.setParent(null);
+                	childCategory.setIfRacine(true);
+                	categoryRepository.save(childCategory);
+                    if (parentCategory.getNbrChildrends() == 0){
+                        parentCategory.setIfRacine(true);
+                    }
+                	categoryRepository.save(parentCategory);
+                }
             }
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse("Catégorie mise à jour avec succès : " + parentCategory.getName(), true));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("Echec de la mise à jour", false));
+                    .body(new ApiResponse("Echec de la mise à jour" + e.getMessage(), false));
         }
     }
 

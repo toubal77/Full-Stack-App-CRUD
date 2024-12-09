@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import categorie.DTO.UpdateChildrenRequest;
 import categorie.entities.Category;
 import categorie.reponses.ApiResponse; 
 import categorie.services.CategoryService;
@@ -41,5 +42,10 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
         return categoryService.deleteCategory(id);
+    }
+
+    @PutMapping("/update-children")
+    public ResponseEntity<ApiResponse> updateCategoryChildren(@RequestBody UpdateChildrenRequest request) {
+        return categoryService.updateCategoryChildren(request);    
     }
 }
