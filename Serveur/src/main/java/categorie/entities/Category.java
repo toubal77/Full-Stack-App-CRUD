@@ -15,18 +15,18 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Date creationDate;
+    
     private String name;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Category> children = new ArrayList<>();
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @JsonBackReference
     private Category parent;
 
-    private Date creationDate;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Category> children = new ArrayList<>();
 
     private boolean ifRacine;
 
