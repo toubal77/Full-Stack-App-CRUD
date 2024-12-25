@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Modifier la Catégorie</h2>
+    <h2 class="text-center mb-4">{{ isEditMode ? 'Modifier la Catégorie' : 'Ajouter une Catégorie' }}</h2>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div *ngIf="notificationMessage" class="alert alert-success mt-3">
@@ -32,7 +32,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Modifier la Catégorie</button>
+                <button type="submit" class="btn btn-primary btn-block">{{ isEditMode ? 'Modifier la Catégorie' : 'Enregistrer' }}</button>
             </form>
         </div>
 

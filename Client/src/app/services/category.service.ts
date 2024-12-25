@@ -21,6 +21,10 @@ export class CategoryService {
     return this.http.put<ApiResponse>(`${this.apiUrl}/${id}`, category);
   }
 
+  updateCategoryChildren(payload: any): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`${this.apiUrl}/update-children`, payload);
+  }
+
   getCategoryById(id: number): Observable<Category> {
     return this.http.get<Category>(`${this.apiUrl}/${id}`);
   }

@@ -181,37 +181,78 @@ export class CreateCategoryComponent implements OnInit {
   addChild(): void {
     if (this.selectedChild) {
       this.newCategory.childrens.push(this.selectedChild);
-      // reinitialise la selection
+
+      const childrenIds = this.newCategory.childrens.map(child => child.id);
+      const payload = {
+        id: this.newCategory.id,
+        childrens: childrenIds,
+      };
+      this.categoryService.updateCategoryChildren(payload)
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open(response.message, 'Fermer', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
+          },
+          error: (error) => {
+            this.snackBar.open(error.error.message, 'Fermer', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
+          }
+        });
+      // reinitialiser la selection
       this.selectedChild = null;
     } else {
-        this.snackBar.open('Veuillez sélectionner un enfant', 'Fermer', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-        });
+      this.snackBar.open('Veuillez sélectionner un enfant', 'Fermer', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
     }
   }
-  
+
 
   deleteChild(child: Category): void {
-    if (child != null) {
-        const index = this.newCategory.childrens.findIndex(existingChild => existingChild.id === child.id);
-        if (index !== -1) {
-            this.newCategory.childrens.splice(index, 1);
-        } else {
-            this.snackBar.open('Enfant introuvable dans la liste', 'Fermer', {
-                duration: 3000,
-                horizontalPosition: 'right',
-                verticalPosition: 'top'
+    const index = this.newCategory.childrens.findIndex(
+      existingChild => existingChild.id === child.id
+    );
+    if (index !== -1) {
+      this.newCategory.childrens.splice(index, 1);
+      
+      const childrenIds = this.newCategory.childrens.map(child => child.id);
+      const payload = {
+        id: this.newCategory.id,
+        childrens: childrenIds,
+        childrensRemoved: [child.id]
+      };
+      this.categoryService.updateCategoryChildren(payload)
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open(response.message, 'Fermer', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
             });
-        }
-    } else {
-        this.snackBar.open('Erreur lors de la suppression de l\'enfant', 'Fermer', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
+          },
+          error: (error) => {
+            this.snackBar.open(error.error.message, 'Fermer', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top'
+            });
+          }
         });
+    } else {
+      this.snackBar.open('Enfant introuvable dans la liste', 'Fermer', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
     }
-}
+  }
 
 }
