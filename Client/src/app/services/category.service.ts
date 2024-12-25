@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../core/models/ApiResponse';
 import { Category } from '../core/models/Category';
@@ -36,4 +36,16 @@ export class CategoryService {
   deleteCategory(id: number): Observable<ApiResponse> {
     return this.http.delete<ApiResponse>(`${this.apiUrl}/${id}`);
   }  
+
+  filterCategories(isRacine: boolean, startDate: string | null, endDate: string | null): Observable<Category[]> {
+    let params = new HttpParams().set('isRacine', isRacine.toString());
+    if (startDate) {
+        params = params.set('startDate', startDate);
+    }
+    if (endDate) {
+        params = params.set('endDate', endDate);
+    }
+    return this.http.get<Category[]>(`${this.apiUrl}/filter`, { params });
+}
+
 }

@@ -21,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ListCategoriesComponent,
     Page404Component,
     CreateCategoryComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    SearchDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Recherche de Catégories</h2>
+<form (ngSubmit)="applyFilters()" #filterForm="ngForm">
+  <div class="filters">
+    <label>
+      <input type="checkbox" [(ngModel)]="isRootCategory" name="isRootCategory"> Catégorie Racine
+    </label>
+    
+    <div class="date-filters">
+      <label>
+        Date de création après:
+        <input type="date" [(ngModel)]="creationDateAfter" name="creationDateAfter">
+      </label>
+      
+      <label>
+        Date de création avant:
+        <input type="date" [(ngModel)]="creationDateBefore" name="creationDateBefore">
+      </label>
+      
+      <label>
+        Date de création entre:
+        <input type="date" [(ngModel)]="creationDateFrom" name="creationDateFrom">
+        <input type="date" [(ngModel)]="creationDateTo" name="creationDateTo">
+      </label>
+    </div>
+    
+    <label>
+      Nombre de catégories enfants:
+      <input type="number" [(ngModel)]="childCount" name="childCount">
+    </label>
+    
+    <button type="submit">Appliquer les filtres</button>
+  </div>
+</form>

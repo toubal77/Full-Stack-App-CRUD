@@ -22,32 +22,7 @@
                   </button>
                 </div>
               </div>
-
-              <div class="filters">
-                <label>
-                  <input type="checkbox" [(ngModel)]="isRootCategory"> Catégorie Racine
-                </label>
-                <div class="date-filters">
-                  <label>
-                    Date de création après:
-                    <input type="date" [(ngModel)]="creationDateAfter">
-                  </label>
-                  <label>
-                    Date de création avant:
-                    <input type="date" [(ngModel)]="creationDateBefore">
-                  </label>
-                  <label>
-                    Date de création entre:
-                    <input type="date" [(ngModel)]="creationDateFrom">
-                    <input type="date" [(ngModel)]="creationDateTo">
-                  </label>
-                </div>
-                <label>
-                  Nombre de catégories enfants:
-                  <input type="number" [(ngModel)]="childCount">
-                </label>
-              </div>
-
+              <button mat-button (click)="openSearchDialog()">Ouvrir le formulaire de recherche</button>            
               <mat-table [dataSource]="dataSource" matSort class="mat-cell">
                 <ng-container matColumnDef="Nom">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
