@@ -2,14 +2,29 @@ name: CI Server
 
 on:
   push:
-    branches: [master, develop, release]
+    branches: [master]
   pull_request:
-    branches: [master, develop, release]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
   build-server:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: tp1_fullstack
+        options: >-
+          --health-cmd="pg_isready -U root -d tp1_fullstack"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -20,12 +35,10 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Wait for PostgreSQL to be ready
+        run: sleep 15
+
       - name: Build and test server
         run: |
           cd Serveur
           mvn clean install
-          
-      - name: Display test results
-        run: |
-          cd Serveur
-          mvn test
