@@ -155,3 +155,31 @@ $error-background: $background-light;
   text-align: center;
 }
 
+.filters {
+  background-color: #f9f9f9;
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  margin-bottom: 20px; 
+}
+
+.filters label {
+  display: block;
+  margin-bottom: 10px; 
+  font-weight: 600;
+}
+
+.filters input[type="date"],
+.filters input[type="number"],
+.filters input[type="checkbox"] {
+  margin-left: 10px; 
+  padding: 5px;
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  width: auto;
+}
+
+.filters input[type="checkbox"] {
+  width: auto; 
+  margin-left: 0; 
+}
