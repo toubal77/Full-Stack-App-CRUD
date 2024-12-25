@@ -8,6 +8,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import categorie.DTO.LoginResponseDTO;
+import categorie.config.JwtDecoder;
+import io.jsonwebtoken.Claims;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -34,7 +39,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-        String tokenUrl = "http://localhost:8081/realms/FullStack/protocol/openid-connect/token";
+        String tokenUrl = "http://keycloak:8080/realms/FullStack/protocol/openid-connect/token";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -52,26 +57,31 @@ public class AuthController {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
 
-            return ResponseEntity.ok(response.getBody());
+            String accessToken = (String) response.getBody().get("access_token");
+
+            if (accessToken != null) {
+                Claims claims = JwtDecoder.decodeJWT(accessToken);
+
+                String emailVerified = claims.get("email_verified").toString();
+                String name = claims.get("name").toString();
+                String preferredUsername = claims.get("preferred_username").toString();
+                String givenName = claims.get("given_name").toString();
+                String familyName = claims.get("family_name").toString();
+                String email = claims.get("email").toString();
+
+                LoginResponseDTO loginResponse = new LoginResponseDTO(emailVerified == "true" ? true : false, name,
+                        preferredUsername, givenName, familyName, email);
+
+                HttpHeaders responseHeaders = new HttpHeaders();
+                responseHeaders.set("Authorization", "Bearer " + accessToken);
+
+                return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No access token found in the response");
+            }
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials" + e.toString());
-        }
-    }
-
-    @GetMapping("/userinfo")
-    public ResponseEntity<?> userInfo(@RequestHeader("Authorization") String token) {
-        String userInfoUrl = "http://localhost:8081/realms/FullStack/protocol/openid-connect/userinfo";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
-
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-
-        try {
-            ResponseEntity<Map> response = restTemplate.exchange(userInfoUrl, HttpMethod.GET, request, Map.class);
-            return ResponseEntity.ok(response.getBody());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
     }
 }

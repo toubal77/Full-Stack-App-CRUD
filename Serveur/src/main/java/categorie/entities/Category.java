@@ -16,7 +16,7 @@ public class Category {
     private Long id;
 
     private Date creationDate;
-    
+
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +44,6 @@ public class Category {
         this.creationDate = new Date();
     }
 
-
     public Long getId() {
         return this.id;
     }
@@ -68,9 +67,9 @@ public class Category {
     public void setChildren(Category child) {
         this.children.add(child);
     }
-    
+
     public void setChildrens(List<Category> children) {
-    	this.children = children;
+        this.children = children;
     }
 
     public Category getParent() {
@@ -97,11 +96,11 @@ public class Category {
         this.ifRacine = ifRacine;
     }
 
-	public Integer getNbrChildrends() {
-		return this.nbrChildrends;
-	}
+    public Integer getNbrChildrends() {
+        return this.nbrChildrends;
+    }
 
-	public void setNbrChildrends(Integer nbrChildrends) {
-		this.nbrChildrends = nbrChildrends;
-	}
+    public void setNbrChildrends(Integer nbrChildrends) {
+        this.nbrChildrends = nbrChildrends;
+    }
 }

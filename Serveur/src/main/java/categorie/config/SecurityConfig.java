@@ -4,6 +4,7 @@ import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +23,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers("/api/auth/userinfo").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/categories/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/categories/**").authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt();

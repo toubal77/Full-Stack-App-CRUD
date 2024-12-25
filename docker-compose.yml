@@ -18,10 +18,44 @@ services:
       - ./serveur:/app
     depends_on:
       - postgres
+      - keycloak
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tpfullstack
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql:3306/keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: root
+      KC_HOSTNAME: localhost
+      KC_PROXY: edge
+    command: start-dev
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   postgres:
     image: postgres:latest
@@ -41,5 +75,6 @@ networks:
     driver: bridge
 
 volumes:
+  keycloak_data: {}
   mysql_data: {}
   postgres_data: {}
