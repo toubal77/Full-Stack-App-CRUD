@@ -16,6 +16,11 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { Page404Component } from './layout/page-404/page-404.component';
+import { CreateCategoryComponent } from './create-category/create-category.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,9 @@ import { Page404Component } from './layout/page-404/page-404.component';
     HeaderComponent,
     FooterComponent,
     ListCategoriesComponent,
-    Page404Component
+    Page404Component,
+    CreateCategoryComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +40,10 @@ import { Page404Component } from './layout/page-404/page-404.component';
     MatTooltipModule,
     MatSortModule,
     MatCardModule,
+    MatSnackBarModule,
+    MatDialogModule,
     MatProgressSpinnerModule,
+    HttpClientModule,
     AppRoutingModule,
     MatPaginatorModule,
     FormsModule,

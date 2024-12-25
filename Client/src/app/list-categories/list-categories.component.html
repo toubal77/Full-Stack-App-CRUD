@@ -11,23 +11,21 @@
               <div class="materialTableHeader d-flex justify-content-between align-items-center">
                 <div class="left-header">
                   <h2><strong>Categories</strong></h2>
-                  <!-- <input placeholder="Recherche par nom" type="text" [(ngModel)]="filterValue" (input)="filterData()" class="browser-default search-field" aria-label="Search box"> -->
-                  <input placeholder="Recherche par nom" type="text" #filter (input)="filterData(filter.value)"  class="browser-default search-field" aria-label="Search box">
+                  <input placeholder="Recherche par nom" type="text" #filter (input)="filterData(filter.value)" class="browser-default search-field" aria-label="Search box">
                 </div>
                 <div class="right-header d-flex">
-                  <button mat-mini-fab color="primary" aria-label="Add">
+                  <button mat-mini-fab color="primary" aria-label="Add" (click)="navigateToCreateCategory()">
                     <mat-icon class="col-white">add</mat-icon>
                   </button>
-                  <button mat-mini-fab color="primary" aria-label="Refresh" (click)="loadData()">
+                  <button mat-mini-fab color="primary" aria-label="Refresh" (click)="refresh()">
                     <mat-icon class="col-white">refresh</mat-icon>
                   </button>
                 </div>
               </div>
-              <!-- filtres -->
+
               <div class="filters">
                 <label>
-                  <input type="checkbox" [(ngModel)]="isRootCategory" > 
-                  Catégorie Racine
+                  <input type="checkbox" [(ngModel)]="isRootCategory"> Catégorie Racine
                 </label>
                 <div class="date-filters">
                   <label>
@@ -36,12 +34,12 @@
                   </label>
                   <label>
                     Date de création avant:
-                    <input type="date" [(ngModel)]="creationDateBefore" >
+                    <input type="date" [(ngModel)]="creationDateBefore">
                   </label>
                   <label>
                     Date de création entre:
                     <input type="date" [(ngModel)]="creationDateFrom">
-                    <input type="date" [(ngModel)]="creationDateTo" >
+                    <input type="date" [(ngModel)]="creationDateTo">
                   </label>
                 </div>
                 <label>
@@ -49,30 +47,31 @@
                   <input type="number" [(ngModel)]="childCount">
                 </label>
               </div>
+
               <mat-table [dataSource]="dataSource" matSort class="mat-cell">
                 <ng-container matColumnDef="Nom">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{ row.Nom }}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Parent">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Parent </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{ row.Parent }}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{ row.parent ? row.parent.name : 'Aucun' }}</mat-cell> <!-- Affiche 'Aucun' si pas de parent -->
                 </ng-container>
 
                 <ng-container matColumnDef="Date_Creation">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Date création </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{ row.Date_Creation | date:'shortDate' }}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{ row.creationDate | date:'shortDate' }}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Enfant">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Enfant </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{ row.Enfant }}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{ row.childrens.length }}</mat-cell> <!-- Affiche le nombre d'enfants -->
                 </ng-container>
 
                 <ng-container matColumnDef="Racine">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Racine </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{ row.Racine }}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{ row.ifRacine ? 'Oui' : 'Non' }}</mat-cell> <!-- Affiche 'Oui' ou 'Non' -->
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
