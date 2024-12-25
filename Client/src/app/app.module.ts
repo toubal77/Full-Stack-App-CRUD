@@ -13,11 +13,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ListCategoriesComponent } from './list-categories/list-categories.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from './layout/header/header.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { Page404Component } from './layout/page-404/page-404.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListCategoriesComponent
+    HeaderComponent,
+    FooterComponent,
+    ListCategoriesComponent,
+    Page404Component
   ],
   imports: [
     BrowserModule,
