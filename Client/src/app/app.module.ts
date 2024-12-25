@@ -22,6 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SearchDialogComponent } from './search-dialog/search-dialog.component';
     Page404Component,
     CreateCategoryComponent,
     ConfirmDialogComponent,
-    SearchDialogComponent
+    SearchDialogComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
