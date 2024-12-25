@@ -25,7 +25,7 @@ export class SearchDialogComponent {
       creationDateBefore: this.creationDateBefore || '', 
       creationDateFrom: this.creationDateFrom || '', 
       creationDateTo: this.creationDateTo || '',
-      childCount: this.childCount != null ? this.childCount.toString() : ''
+      childCount: this.childCount != null ? this.childCount : ''
     };
   
     console.log('filters applique:', filters);
@@ -33,7 +33,7 @@ export class SearchDialogComponent {
     const startDate = filters.creationDateFrom || filters.creationDateAfter; 
     const endDate = filters.creationDateTo || filters.creationDateBefore; 
   
-    this.categoryService.filterCategories(filters.isRootCategory, startDate, endDate).subscribe({
+    this.categoryService.filterCategories(filters.isRootCategory, startDate, endDate, this.childCount).subscribe({
       next: (data: Category[]) => {
         this.categories = data;
         console.log('categories', this.categories);

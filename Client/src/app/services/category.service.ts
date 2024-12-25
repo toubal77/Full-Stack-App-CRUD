@@ -37,15 +37,23 @@ export class CategoryService {
     return this.http.delete<ApiResponse>(`${this.apiUrl}/${id}`);
   }  
 
-  filterCategories(isRacine: boolean, startDate: string | null, endDate: string | null): Observable<Category[]> {
-    let params = new HttpParams().set('isRacine', isRacine.toString());
+  filterCategories(isRacine: Boolean, startDate: string | null, endDate: string | null, childCount: number | null): Observable<Category[]> {
+    let params = new HttpParams();
     if (startDate) {
         params = params.set('startDate', startDate);
     }
     if (endDate) {
         params = params.set('endDate', endDate);
     }
+
+    if (childCount) {
+      params = params.set('childCount', childCount);
+    }
+
+    if (isRacine) {
+      params = params.set('isRacine', isRacine.toString());
+    }
     return this.http.get<Category[]>(`${this.apiUrl}/filter`, { params });
-}
+  }
 
 }
