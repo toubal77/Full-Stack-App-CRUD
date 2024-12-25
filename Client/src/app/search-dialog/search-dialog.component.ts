@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../core/models/Category';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
+  styleUrls: ['./search-dialog.component.scss']
 })
 export class SearchDialogComponent {
   isRootCategory: boolean = false;
@@ -15,17 +17,41 @@ export class SearchDialogComponent {
   creationDateTo: string | null = null;
   childCount: number | null = null;
   categories: Category[] = [];
+  today: string;
 
-  constructor(private dialogRef: MatDialogRef<SearchDialogComponent>, private categoryService: CategoryService) {}
+  constructor(
+    private datePipe: DatePipe,
+    private dialogRef: MatDialogRef<SearchDialogComponent>,
+    private categoryService: CategoryService
+  ) {
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '';
+  }
+
+  formatDate(date: Date): string {
+    return this.datePipe.transform(date, 'yyyy-MM-dd') || '';
+  }
 
   applyFilters() {
+    if (this.creationDateAfter) {
+      this.creationDateAfter = this.formatDate(new Date(this.creationDateAfter));
+    }
+    if (this.creationDateBefore) {
+      this.creationDateBefore = this.formatDate(new Date(this.creationDateBefore));
+    }
+    if (this.creationDateFrom) {
+      this.creationDateFrom = this.formatDate(new Date(this.creationDateFrom));
+    }
+    if (this.creationDateTo) {
+      this.creationDateTo = this.formatDate(new Date(this.creationDateTo));
+    }
+
     const filters = {
       isRootCategory: this.isRootCategory,
-      creationDateAfter: this.creationDateAfter || '',
-      creationDateBefore: this.creationDateBefore || '', 
-      creationDateFrom: this.creationDateFrom || '', 
-      creationDateTo: this.creationDateTo || '',
-      childCount: this.childCount != null ? this.childCount : ''
+      creationDateAfter: this.creationDateAfter,
+      creationDateBefore: this.creationDateBefore,
+      creationDateFrom: this.creationDateFrom,
+      creationDateTo: this.creationDateTo,
+      childCount: this.childCount !== null ? this.childCount : ''
     };
   
     console.log('filters applique:', filters);

@@ -1,0 +1,61 @@
+.container {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 420px;
+    height: 450px;
+}
+
+h2[mat-dialog-title] {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+}
+
+.filters {
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.full-width {
+    width: 100%;
+    margin: 5px;
+}
+
+.date-filters,
+.date-range-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.date-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.date-input {
+    flex: 1;
+}
+
+.date-range-separator {
+    font-weight: bold;
+}
+
+button[mat-raised-button] {
+    display: block;
+    margin: 5px auto 0;
+}

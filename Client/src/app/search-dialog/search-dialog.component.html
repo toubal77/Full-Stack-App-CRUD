@@ -1,33 +1,49 @@
-<h2 mat-dialog-title>Recherche de Catégories</h2>
-<form (ngSubmit)="applyFilters()" #filterForm="ngForm">
-  <div class="filters">
-    <label>
-      <input type="checkbox" [(ngModel)]="isRootCategory" name="isRootCategory"> Catégorie Racine
-    </label>
-    
-    <div class="date-filters">
-      <label>
-        Date de création après:
-        <input type="date" [(ngModel)]="creationDateAfter" name="creationDateAfter">
-      </label>
+<div class="container">
+  <h2 mat-dialog-title>Recherche avancée de catégories</h2>
+  <form (ngSubmit)="applyFilters()" #filterForm="ngForm" class="filter-form">
+    <div class="filters">
+      <mat-checkbox [(ngModel)]="isRootCategory" name="isRootCategory" class="filter-checkbox">
+        Catégorie Racine
+      </mat-checkbox>
       
-      <label>
-        Date de création avant:
-        <input type="date" [(ngModel)]="creationDateBefore" name="creationDateBefore">
-      </label>
+      <div class="date-filters">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Date de création après:</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="creationDateAfter" name="creationDateAfter" [max]="today">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Date de création avant:</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="creationDateBefore" name="creationDateBefore" [max]="today">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="date-range-container">
+        <p class="date-label">Date de création entre:</p>
+        <div class="date-inputs">
+          <mat-form-field appearance="fill" class="full-width">
+            <input matInput [matDatepicker]="picker3" [(ngModel)]="creationDateFrom" name="creationDateFrom" [max]="today" class="date-input">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+          <span class="date-range-separator">à</span>
+          <mat-form-field appearance="fill" class="full-width">
+            <input matInput [matDatepicker]="picker4" [(ngModel)]="creationDateTo" name="creationDateTo" [max]="today" class="date-input">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
       
-      <label>
-        Date de création entre:
-        <input type="date" [(ngModel)]="creationDateFrom" name="creationDateFrom">
-        <input type="date" [(ngModel)]="creationDateTo" name="creationDateTo">
-      </label>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nombre de catégories enfants:</mat-label>
+        <input matInput type="number" [(ngModel)]="childCount" name="childCount">
+      </mat-form-field>
     </div>
-    
-    <label>
-      Nombre de catégories enfants:
-      <input type="number" [(ngModel)]="childCount" name="childCount">
-    </label>
-    
-    <button type="submit">Appliquer les filtres</button>
-  </div>
-</form>
+    <button mat-raised-button color="primary" type="submit">Appliquer les filtres</button>
+  </form>
+</div>

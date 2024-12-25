@@ -21,8 +21,8 @@
                     <mat-icon class="col-white">refresh</mat-icon>
                   </button>
                 </div>
-              </div>
-              <button mat-button (click)="openSearchDialog()">Ouvrir le formulaire de recherche</button>            
+              </div>            
+              <button mat-raised-button color="primary" (click)="openSearchDialog()">Ouvrir le formulaire de recherche</button>
               <mat-table [dataSource]="dataSource" matSort class="mat-cell">
                 <ng-container matColumnDef="Nom">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
