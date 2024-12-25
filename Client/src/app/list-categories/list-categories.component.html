@@ -1,1 +1,92 @@
-<p>list-categories works!</p>
+<section class="content">
+  <div class="container-fluid" [hidden]="msgError">
+    <div class="block-header">
+      <h4 class="page-title">Liste catégories</h4>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="body">
+            <div class="table-responsive">
+              <div class="materialTableHeader d-flex justify-content-between align-items-center">
+                <div class="left-header">
+                  <h2><strong>Categories</strong></h2>
+                  <input placeholder="Recherche par nom" type="text" #filter class="browser-default search-field" aria-label="Search box">
+                </div>
+                <div class="right-header d-flex">
+                  <button mat-mini-fab color="primary" aria-label="Add">
+                    <mat-icon class="col-white">add</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="primary" aria-label="Refresh">
+                    <mat-icon class="col-white">refresh</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-table [dataSource]="dataSource" matSort class="mat-cell">
+                <ng-container matColumnDef="Nom">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.Nom }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Parent">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Parent </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.Parent }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Date_Creation">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Date création </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.Date_Creation }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Enfant">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Enfant </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.Enfant }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Racine">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Racine </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.Racine }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <button mat-icon-button color="primary" (click)="editCategory(row)">
+                      <mat-icon class="col-white">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" (click)="deleteCategory(row)">
+                      <mat-icon class="col-white">delete</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+
+              <div *ngIf="!msgError && dataSource.data.length === 0" class="no-results">
+                <div class="no-results-container">
+                  <p>Aucune catégorie, liste vide</p>
+                </div>
+              </div>
+
+              <mat-paginator 
+                #paginator 
+                [length]="dataSource ? dataSource.data.length : 0" 
+                [pageIndex]="0" 
+                [pageSize]="5" 
+                [pageSizeOptions]="[5, 10, 25, 100]">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div *ngIf="msgError" class="error-container">
+  <div class="no-results-container">
+    <p>{{msgError}}</p>
+  </div>
+</div>
+</section>
