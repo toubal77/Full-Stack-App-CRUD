@@ -22,7 +22,8 @@ export class CreateCategoryComponent implements OnInit {
     creationDate: new Date(),
     childrens: [],
     ifRacine: false,
-    parent: null 
+    parent: null,
+    nbrChildrens: 0
   };
   categories: Category[] = [];
 
@@ -37,7 +38,8 @@ export class CreateCategoryComponent implements OnInit {
             creationDate: new Date(),
             childrens: [],
             ifRacine: false,
-            parent: null 
+            parent: null,
+            nbrChildrens: 0
         };
     }
 }
@@ -108,7 +110,8 @@ export class CreateCategoryComponent implements OnInit {
           creationDate: new Date(),
           childrens: [],
           ifRacine: false,
-          parent: null 
+          parent: null,
+          nbrChildrens: 0
         };
         //load la liste des categories parent apres l'ajout d'une nouvelle categorie
         this.loadData();
@@ -180,9 +183,10 @@ export class CreateCategoryComponent implements OnInit {
 
   addChild(): void {
     if (this.selectedChild) {
+      let newChildrends = [];
+      newChildrends.push(this.selectedChild);
       this.newCategory.childrens.push(this.selectedChild);
-
-      const childrenIds = this.newCategory.childrens.map(child => child.id);
+      const childrenIds = newChildrends.map(child => child.id);
       const payload = {
         id: this.newCategory.id,
         childrens: childrenIds,

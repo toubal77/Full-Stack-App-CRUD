@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryService } from '../services/category.service';
+import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({
   selector: 'app-list-categories',
@@ -20,13 +21,6 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<Category>([]);
   msgError: any;
   originalData: any[] = [];
-  isRootCategory: boolean = false;  // filtre pour les categories racines
-  creationDateAfter: Date | null = null; // date apres
-  creationDateBefore: Date | null = null; // date avant
-  creationDateFrom: Date | null = null; // date de debut
-  creationDateTo: Date | null = null; // date de fin
-  childCount: number | null = null; // nombre de categories enfants
-  filterValue: string = ""; // valeur de filtre par nom
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -50,10 +44,21 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   filterData(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return data.Nom.toLowerCase().startsWith(filter);
+      return data.name.toLowerCase().startsWith(filter);
     };
   }
 
+  openSearchDialog() {
+    const dialogRef = this.dialog.open(SearchDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataSource.data = result;
+        console.log('result', this.dataSource.data);
+      }
+    });
+  }
+  
   navigateToCreateCategory() {
     this.router.navigate(['/create-categorie']);
   }
