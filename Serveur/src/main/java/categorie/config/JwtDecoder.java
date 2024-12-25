@@ -3,8 +3,10 @@ package categorie.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.SignatureException;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,18 +17,65 @@ import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class JwtDecoder {
 
     private static final String JWKS_URI = "http://keycloak:8080/realms/FullStack/protocol/openid-connect/certs";
+    private static final String KID = "M8uX5qMC-Uo3M5n8ByOE8obEL_WqohAErdc6QRC94-k";
 
     public static Claims decodeJWT(String jwt) throws Exception {
-        PublicKey publicKey = getPublicKeyFromJWKS("M8uX5qMC-Uo3M5n8ByOE8obEL_WqohAErdc6QRC94-k");
+        PublicKey publicKey = getPublicKeyFromJWKS(KID);
 
         JwtParser parser = Jwts.parser()
                 .setSigningKey(publicKey)
                 .build();
         return parser.parseClaimsJws(jwt).getBody();
+    }
+
+    public static boolean isTokenValid(String jwt) {
+        try {
+            Claims claims = decodeJWT(jwt);
+            System.out.println("issuer: " + claims);
+            System.out.println("cliams : " + claims.getExpiration());
+            System.out.println("date : " + new Date());
+            System.out.println("resultat : " + claims.getExpiration().before(new Date()));
+
+            Date expirationDate = claims.getExpiration();
+            if (expirationDate == null || expirationDate.before(new Date())) {
+                System.out.println("Token has expired.");
+                return false;
+            }
+
+            List<String> roles = getRolesFromJwt(claims);
+            List<SimpleGrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .collect(Collectors.toList());
+            System.out.println("Roles from JWT: " + roles);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    claims.getSubject(), null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println("authentication: " + authentication);
+            System.out.println("Roles in Authentication: " + authorities);
+
+            return true;
+        } catch (SignatureException e) {
+            System.out.println("Invalid token signature.");
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error while validating token: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static List<String> getRolesFromJwt(Claims claims) {
+        Map<String, Object> resourceAccess = claims.get("resource_access", Map.class);
+        List<String> roles = (List<String>) ((Map) resourceAccess.get("fullstack-client-id")).get("roles");
+        return roles;
     }
 
     private static PublicKey getPublicKeyFromJWKS(String kid) throws Exception {
