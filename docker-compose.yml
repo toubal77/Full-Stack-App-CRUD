@@ -31,8 +31,6 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: mysql
-      KC_DB_URL: jdbc:mysql://mysql:3306/keycloak
       KC_DB_USERNAME: root
       KC_DB_PASSWORD: root
       KC_HOSTNAME: localhost
@@ -42,24 +40,10 @@ services:
       - --import-realm
     ports:
       - "8081:8080"
-    depends_on:
-      - mysql
     networks:
       - app-network
     volumes:
       - ./keycloak:/opt/keycloak/data/import
-
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-    ports:
-      - "3306:3306"
-    networks:
-      - app-network
-    volumes:
-      - mysql_data:/var/lib/mysql
 
   postgres:
     image: postgres:latest
@@ -80,5 +64,4 @@ networks:
 
 volumes:
   keycloak_data: {}
-  mysql_data: {}
   postgres_data: {}
