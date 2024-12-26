@@ -1,6 +1,5 @@
 package categorie.config;
 
-import io.jsonwebtoken.Claims;
 import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,7 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 try {
                     if (JwtDecoder.isTokenValid(token)) {
-                        System.out.println("je suis ici j'ai valide le token" + response);
                         filterChain.doFilter(request, response);
                     } else {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

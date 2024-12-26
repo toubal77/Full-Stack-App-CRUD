@@ -40,14 +40,9 @@ public class JwtDecoder {
     public static boolean isTokenValid(String jwt) {
         try {
             Claims claims = decodeJWT(jwt);
-            System.out.println("issuer: " + claims);
-            System.out.println("cliams : " + claims.getExpiration());
-            System.out.println("date : " + new Date());
-            System.out.println("resultat : " + claims.getExpiration().before(new Date()));
 
             Date expirationDate = claims.getExpiration();
             if (expirationDate == null || expirationDate.before(new Date())) {
-                System.out.println("Token has expired.");
                 return false;
             }
 
@@ -55,19 +50,14 @@ public class JwtDecoder {
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(Collectors.toList());
-            System.out.println("Roles from JWT: " + roles);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     claims.getSubject(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("authentication: " + authentication);
-            System.out.println("Roles in Authentication: " + authorities);
 
             return true;
         } catch (SignatureException e) {
-            System.out.println("Invalid token signature.");
             return false;
         } catch (Exception e) {
-            System.out.println("Error while validating token: " + e.getMessage());
             return false;
         }
     }

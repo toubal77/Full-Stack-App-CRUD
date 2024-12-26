@@ -30,7 +30,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
     private categoryService: CategoryService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -54,11 +54,10 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataSource.data = result;
-        console.log('result', this.dataSource.data);
       }
     });
   }
-  
+
   navigateToCreateCategory() {
     this.router.navigate(['/create-categorie']);
   }
@@ -71,7 +70,6 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
     this.loadData().subscribe({
       next: (data) => {
         this.dataSource.data = data;
-        console.log(this.dataSource.data);
       },
       error: (error) => {
         console.error('Erreur lors du chargement des catégories: ', error);
@@ -81,7 +79,6 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   }
 
   editCategory(row: Category): void {
-    console.log('Edit', row);
     this.router.navigate(['/edit-categorie', row.id]);
   }
 
@@ -94,20 +91,18 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
 
         this.categoryService.deleteCategory(id).subscribe({
           next: (response) => {
-            console.log('Catégorie supprimée avec succès', response);
             this.refresh();
             this.snackBar.open(response.message, 'Fermer', {
               duration: 4000,
-              horizontalPosition: 'right', 
+              horizontalPosition: 'right',
               verticalPosition: 'top'
             });
           },
           error: (error) => {
-            console.error('Erreur lors de la suppression de la catégorie: ', error);
             this.msgError = 'Erreur lors de la suppression de la catégorie';
             this.snackBar.open(this.msgError, 'Fermer', {
               duration: 3000,
-              horizontalPosition: 'right', 
+              horizontalPosition: 'right',
               verticalPosition: 'top'
             });
           }

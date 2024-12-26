@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../core/models/Category'; 
+import { Category } from '../core/models/Category';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,7 +14,7 @@ export class CreateCategoryComponent implements OnInit {
   isEditMode: boolean = false;
   categoryId: number | null = null;
   selectedChild: Category | null = null;
-  
+
   notificationMessage: string = '';
   newCategory: Category = {
     id: 0,
@@ -31,18 +31,18 @@ export class CreateCategoryComponent implements OnInit {
   toggleMode(edit: boolean): void {
     this.isEditMode = edit;
     if (!edit) {
-        // reinitialise le formulaire 
-        this.newCategory = {
-            id: 0,
-            name: '',
-            creationDate: new Date(),
-            childrens: [],
-            ifRacine: false,
-            parent: null,
-            nbrChildrens: 0
-        };
+      // reinitialise le formulaire
+      this.newCategory = {
+        id: 0,
+        name: '',
+        creationDate: new Date(),
+        childrens: [],
+        ifRacine: false,
+        parent: null,
+        nbrChildrens: 0
+      };
     }
-}
+  }
 
   constructor(
     private router: Router,
@@ -50,7 +50,7 @@ export class CreateCategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -67,8 +67,6 @@ export class CreateCategoryComponent implements OnInit {
   loadCategory(id: number): void {
     this.categoryService.getCategoryById(id).subscribe((category) => {
       this.newCategory = category;
-      console.log(this.newCategory);
-      console.log(this.newCategory.childrens);
     });
   }
 
@@ -76,13 +74,11 @@ export class CreateCategoryComponent implements OnInit {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
         this.categories = data;
-        console.log(this.categories);
       },
       error: (error) => {
-        //console.error('Erreur lors du chargement des catégories: ', error);
         this.snackBar.open('Erreur lors du chargement des catégories', 'Fermer', {
           duration: 3000,
-          horizontalPosition: 'right', 
+          horizontalPosition: 'right',
           verticalPosition: 'top'
         });
       }
@@ -98,10 +94,9 @@ export class CreateCategoryComponent implements OnInit {
     if (!this.newCategory.ifRacine && this.newCategory.parent) {
       categoryPayload.parent = { id: this.newCategory.parent.id };
     }
-    
+
     this.categoryService.createCategory(categoryPayload).subscribe({
       next: (response) => {
-        //console.log(response);
         this.notificationMessage = response.message;
         // reinitialise le formulaire
         this.newCategory = {
@@ -117,16 +112,15 @@ export class CreateCategoryComponent implements OnInit {
         this.loadData();
       },
       error: (error) => {
-        //console.error('Erreur lors de la création de la catégorie:', error);
         this.notificationMessage = error.error.message;
       }
     });
   }
 
   isChildDisabledOrParant(child: Category): boolean {
-     // empeche l'utilisateur de selectionne le parent comme enfant
-     if (child.id === this.newCategory.id) {
-      return true; 
+    // empeche l'utilisateur de selectionne le parent comme enfant
+    if (child.id === this.newCategory.id) {
+      return true;
     }
     // empeche l'utilisateur de selectionne un enfant deja selectionne
     return this.newCategory.childrens.some(existingChild => existingChild.id === child.id);
@@ -140,19 +134,19 @@ export class CreateCategoryComponent implements OnInit {
   editCategory(): void {
     const categoryId = this.newCategory.id;
     let categoryUpdate: any;
-     if (this.newCategory.childrens && this.newCategory.childrens.length > 0) {
+    if (this.newCategory.childrens && this.newCategory.childrens.length > 0) {
       categoryUpdate = {
         name: this.newCategory.name,
         ifRacine: this.newCategory.ifRacine,
       };
-    } 
-     if (this.newCategory.ifRacine) {
+    }
+    if (this.newCategory.ifRacine) {
       categoryUpdate = {
         name: this.newCategory.name,
         ifRacine: true,
       };
-    } 
-     if (this.newCategory.parent != null && !this.newCategory.ifRacine) {
+    }
+    if (this.newCategory.parent != null && !this.newCategory.ifRacine) {
       categoryUpdate = {
         name: this.newCategory.name,
         parent: {
@@ -161,8 +155,6 @@ export class CreateCategoryComponent implements OnInit {
         ifRacine: this.newCategory.ifRacine,
       };
     }
-    console.log("send to update", categoryUpdate);
-    console.log("newCategory", this.newCategory);
     this.categoryService.updateCategory(categoryId, categoryUpdate).subscribe({
       next: (response) => {
         this.snackBar.open(response.message, 'Fermer', {
@@ -226,7 +218,7 @@ export class CreateCategoryComponent implements OnInit {
     );
     if (index !== -1) {
       this.newCategory.childrens.splice(index, 1);
-      
+
       const childrenIds = this.newCategory.childrens.map(child => child.id);
       const payload = {
         id: this.newCategory.id,

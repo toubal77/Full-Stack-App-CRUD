@@ -1,7 +1,5 @@
 package categorie.services;
 
-import categorie.DTO.ChildDTO;
-import categorie.DTO.ParentDTO;
 import categorie.DTO.ResponseDTO;
 import categorie.DTO.UpdateChildrenRequest;
 import categorie.entities.Category;
@@ -9,13 +7,11 @@ import categorie.reponses.ApiResponse;
 import categorie.repositories.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,13 +34,13 @@ class CategoryServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        
+
         parentCategory = new Category("Parent", null, true);
         parentCategory.setId(1L);
         childCategory = new Category("Child", parentCategory, false);
         childCategory.setId(2L);
         parentCategory.setChildren(childCategory);
-        
+
         if (parentCategory.getNbrChildrends() == null) {
             parentCategory.setNbrChildrends(0);
         }
@@ -53,7 +49,6 @@ class CategoryServiceTest {
         parentCategory.setCreationDate(now);
         childCategory.setCreationDate(now);
     }
-
 
     @Test
     void testGetAllCategories_NoCategories() {
@@ -101,7 +96,7 @@ class CategoryServiceTest {
         when(categoryRepository.save(any(Category.class))).thenReturn(parentCategory);
 
         ResponseEntity<ApiResponse> response = categoryService.createCategory(parentCategory);
-        
+
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("Catégorie créée avec succès : Parent", response.getBody().getMessage());
     }
@@ -113,24 +108,6 @@ class CategoryServiceTest {
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Données de catégorie invalides", response.getBody().getMessage());
     }
-
-//    @Test
-//    void testUpdateCategory_Success() {
-//        when(categoryRepository.findById(1L)).thenReturn(Optional.of(parentCategory));
-//
-//        Category updatedCategory = new Category();
-//        updatedCategory.setId(parentCategory.getId());
-//        updatedCategory.setName("Updated Parent");
-//        updatedCategory.setParent(parentCategory);
-//
-//        when(categoryRepository.save(any(Category.class))).thenReturn(updatedCategory);
-//
-//        ResponseEntity<ApiResponse> response = categoryService.updateCategory(1L, updatedCategory);
-//        assertEquals(200, response.getStatusCodeValue());
-//        assertEquals("Catégorie mise à jour avec succès : Updated Parent", response.getBody().getMessage());
-//    }
-
-
 
     @Test
     void testUpdateCategory_NotFound() {

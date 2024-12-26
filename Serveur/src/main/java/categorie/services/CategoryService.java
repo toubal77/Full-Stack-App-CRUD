@@ -25,43 +25,42 @@ public class CategoryService {
 
     public ResponseEntity<Object> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
-        
+
         if (categories.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse("Aucune catégorie trouvée", false));
         }
-        
+
         List<ResponseDTO> responseDTOs = new ArrayList<>();
 
         for (Category category : categories) {
             ParentDTO parentDTO = null;
             if (category.getParent() != null) {
                 Category parent = category.getParent();
-                parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(), parent.getNbrChildrends());
+                parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(),
+                        parent.isIfRacine(), parent.getNbrChildrends());
             }
-            
+
             List<Category> childrens = category.getChildren();
             List<ChildDTO> childDTOs = new ArrayList<>();
 
             for (Category child : childrens) {
                 ChildDTO childDTO = new ChildDTO(
-                    child.getId(),
-                    child.getName(),
-                    child.getCreationDate(),
-                    child.isIfRacine(),
-                    child.getNbrChildrends()
-                );
+                        child.getId(),
+                        child.getName(),
+                        child.getCreationDate(),
+                        child.isIfRacine(),
+                        child.getNbrChildrends());
                 childDTOs.add(childDTO);
             }
-            
+
             ResponseDTO responseDTO = new ResponseDTO(
-            	    category.getId(),
-            	    category.getName(),
-            	    category.getCreationDate(),
-            	    category.isIfRacine(),
-            	    parentDTO,
-            	    childDTOs,
-            	    category.getNbrChildrends()
-            	);
+                    category.getId(),
+                    category.getName(),
+                    category.getCreationDate(),
+                    category.isIfRacine(),
+                    parentDTO,
+                    childDTOs,
+                    category.getNbrChildrends());
 
             responseDTOs.add(responseDTO);
         }
@@ -83,37 +82,36 @@ public class CategoryService {
         ParentDTO parentDTO = null;
         if (category.getParent() != null) {
             Category parent = category.getParent();
-            parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(), parent.getNbrChildrends());
+            parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(),
+                    parent.getNbrChildrends());
         }
-        
+
         List<Category> childrens = category.getChildren();
-        
+
         List<ChildDTO> childDTOs = new ArrayList<>();
 
         for (Category child : childrens) {
             ChildDTO childDTO = new ChildDTO(
-                child.getId(),
-                child.getName(),
-                child.getCreationDate(),
-                child.isIfRacine(),
-                child.getNbrChildrends()
-            );
+                    child.getId(),
+                    child.getName(),
+                    child.getCreationDate(),
+                    child.isIfRacine(),
+                    child.getNbrChildrends());
             childDTOs.add(childDTO);
         }
-        
+
         ResponseDTO responseDTO = new ResponseDTO(
-            category.getId(),
-            category.getName(),
-            category.getCreationDate(),
-            category.isIfRacine(),
-            parentDTO, 
-            childDTOs,
-            category.getNbrChildrends()
-        );
+                category.getId(),
+                category.getName(),
+                category.getCreationDate(),
+                category.isIfRacine(),
+                parentDTO,
+                childDTOs,
+                category.getNbrChildrends());
 
         return ResponseEntity.ok(responseDTO);
     }
-    
+
     public ResponseEntity<ApiResponse> updateCategory(Long id, Category updatedCategory) {
         if (id == null || id <= 0) {
             return ResponseEntity.badRequest().body(new ApiResponse("ID invalide", false));
@@ -144,51 +142,48 @@ public class CategoryService {
             Category parent = existingCategory.getParent();
             parent.setNbrChildrends(parent.getNbrChildrends() - 1);
             existingCategory.setParent(null);
-            if (parent.getNbrChildrends() == 0){
+            if (parent.getNbrChildrends() == 0) {
                 parent.setIfRacine(true);
             }
             categoryRepository.save(parent);
         }
 
         categoryRepository.save(existingCategory);
-        return ResponseEntity.ok(new ApiResponse("Catégorie mise à jour avec succès : " + existingCategory.getName(), true));
+        return ResponseEntity
+                .ok(new ApiResponse("Catégorie mise à jour avec succès : " + existingCategory.getName(), true));
     }
 
     public ResponseEntity<ApiResponse> updateCategoryChildren(UpdateChildrenRequest request) {
         Category parentCategory = categoryRepository.findById(request.getId())
                 .orElseThrow(() -> new RuntimeException("Catégorie parent non trouvée"));
 
-//        if (request.getChildrens() == null || request.getChildrens().isEmpty()) {
-//            return ResponseEntity.badRequest().body(new ApiResponse("La liste des enfants est vide ou non définie.", false));
-//        }
-
         try {
             if (request.getChildrensRemoved().isEmpty()) {
-        	for (Long childId : request.getChildrens()) {
-                Category childCategory = categoryRepository.findById(childId)
-                        .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
-                if (childCategory != null) {
-                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
-                	childCategory.setParent(parentCategory);
-                	childCategory.setIfRacine(false);
-                	categoryRepository.save(childCategory);
-                	categoryRepository.save(parentCategory);
+                for (Long childId : request.getChildrens()) {
+                    Category childCategory = categoryRepository.findById(childId)
+                            .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
+                    if (childCategory != null) {
+                        parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() + 1);
+                        childCategory.setParent(parentCategory);
+                        childCategory.setIfRacine(false);
+                        categoryRepository.save(childCategory);
+                        categoryRepository.save(parentCategory);
+                    }
                 }
             }
-        }
-            
+
             for (Long childId : request.getChildrensRemoved()) {
                 Category childCategory = categoryRepository.findById(childId)
                         .orElseThrow(() -> new RuntimeException("Catégorie enfant non trouvée"));
                 if (childCategory != null) {
-                	parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
-                	childCategory.setParent(null);
-                	childCategory.setIfRacine(true);
-                	categoryRepository.save(childCategory);
-                    if (parentCategory.getNbrChildrends() == 0){
+                    parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
+                    childCategory.setParent(null);
+                    childCategory.setIfRacine(true);
+                    categoryRepository.save(childCategory);
+                    if (parentCategory.getNbrChildrends() == 0) {
                         parentCategory.setIfRacine(true);
                     }
-                	categoryRepository.save(parentCategory);
+                    categoryRepository.save(parentCategory);
                 }
             }
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -217,7 +212,7 @@ public class CategoryService {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse("Catégorie créée avec succès : " + savedCategory.getName(), true));
     }
-    
+
     public ResponseEntity<ApiResponse> deleteCategory(Long id) {
         if (id == null || id <= 0) {
             return ResponseEntity.badRequest().body(new ApiResponse("ID invalide", false));
@@ -228,7 +223,7 @@ public class CategoryService {
             return ResponseEntity.ok(new ApiResponse("Catégorie supprimée avec succès", true));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponse("Catégorie non trouvée pour suppression", false));
+                    .body(new ApiResponse("Catégorie non trouvée pour suppression", false));
         }
     }
 }

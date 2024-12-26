@@ -53,21 +53,18 @@ export class SearchDialogComponent {
       creationDateTo: this.creationDateTo,
       childCount: this.childCount !== null ? this.childCount : ''
     };
-  
-    console.log('filters applique:', filters);
-  
-    const startDate = filters.creationDateFrom || filters.creationDateAfter; 
-    const endDate = filters.creationDateTo || filters.creationDateBefore; 
-  
+
+    const startDate = filters.creationDateFrom || filters.creationDateAfter;
+    const endDate = filters.creationDateTo || filters.creationDateBefore;
+
     this.categoryService.filterCategories(filters.isRootCategory, startDate, endDate, this.childCount).subscribe({
       next: (data: Category[]) => {
         this.categories = data;
-        console.log('categories', this.categories);
         this.dialogRef.close(this.categories);
       },
-      error:(error) => {
+      error: (error) => {
         console.error('Erreur lors de la récupération des catégories:', error.error.message);
       }
     });
-  }  
+  }
 }

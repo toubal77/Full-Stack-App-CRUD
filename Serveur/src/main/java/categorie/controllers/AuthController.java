@@ -17,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import java.util.Map;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,8 +33,6 @@ public class AuthController {
 
     @Value("${keycloak.credentials.secret}")
     private String clientSecret;
-
-    private final RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {

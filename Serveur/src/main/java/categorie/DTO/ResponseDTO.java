@@ -3,26 +3,25 @@ package categorie.DTO;
 import java.util.Date;
 import java.util.List;
 
-import categorie.entities.Category;
-
 public class ResponseDTO {
-    private Long id;
-    private String name;
-    private Date creationDate;
-    private ParentDTO parent;
-    private List<ChildDTO> childrens;
-    private boolean ifRacine;
-    private Integer nbrChildrens;
+	private Long id;
+	private String name;
+	private Date creationDate;
+	private ParentDTO parent;
+	private List<ChildDTO> childrens;
+	private boolean ifRacine;
+	private Integer nbrChildrens;
 
-    public ResponseDTO(Long id, String name, Date creationDate, boolean ifRacine, ParentDTO parent, List<ChildDTO> childrens, Integer nbrChildrens) {
-        this.setId(id);
-        this.setName(name);
-        this.setCreationDate(creationDate);
-        this.setIfRacine(ifRacine);
-        this.setParent(parent);
-        this.setChildrens(childrens);
-        this.setNbrChildrens(nbrChildrens);
-    }
+	public ResponseDTO(Long id, String name, Date creationDate, boolean ifRacine, ParentDTO parent,
+			List<ChildDTO> childrens, Integer nbrChildrens) {
+		this.setId(id);
+		this.setName(name);
+		this.setCreationDate(creationDate);
+		this.setIfRacine(ifRacine);
+		this.setParent(parent);
+		this.setChildrens(childrens);
+		this.setNbrChildrens(nbrChildrens);
+	}
 
 	public ParentDTO getParent() {
 		return parent;
@@ -57,7 +56,7 @@ public class ResponseDTO {
 	}
 
 	public List<ChildDTO> getChildrens() {
-	 	return childrens;
+		return childrens;
 	}
 
 	public void setChildrens(List<ChildDTO> childrens) {

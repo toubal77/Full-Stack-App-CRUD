@@ -1,7 +1,6 @@
 package categorie.controllers;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,9 +38,9 @@ public class CategoryControllerTest {
     @Test
     public void testGetAllCategories() throws Exception {
         when(categoryService.getAllCategories()).thenReturn(new ResponseEntity<>(HttpStatus.OK));
-        
+
         mockMvc.perform(get("/api/categories"))
-               .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         verify(categoryService, times(1)).getAllCategories();
     }
@@ -50,17 +49,17 @@ public class CategoryControllerTest {
     public void testGetCategoryById() throws Exception {
         Long categoryId = 1L;
         when(categoryService.getCategoryById(categoryId)).thenReturn(new ResponseEntity<>(HttpStatus.OK));
-        
+
         mockMvc.perform(get("/api/categories/{id}", categoryId))
-               .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         verify(categoryService, times(1)).getCategoryById(categoryId);
     }
 
     @Test
     public void testCreateCategory() throws Exception {
-        Category category = new Category();
-        when(categoryService.createCategory(any(Category.class))).thenReturn(new ResponseEntity<>(new ApiResponse("Créé avec succès", true), HttpStatus.CREATED));
+        when(categoryService.createCategory(any(Category.class)))
+                .thenReturn(new ResponseEntity<>(new ApiResponse("Créé avec succès", true), HttpStatus.CREATED));
 
         mockMvc.perform(post("/api/categories")
                 .contentType("application/json")
@@ -73,7 +72,6 @@ public class CategoryControllerTest {
     @Test
     public void testUpdateCategory() throws Exception {
         Long categoryId = 1L;
-        Category updatedCategory = new Category();
         when(categoryService.updateCategory(eq(categoryId), any(Category.class)))
                 .thenReturn(new ResponseEntity<>(new ApiResponse("Mis à jour avec succès", true), HttpStatus.OK));
 
@@ -87,9 +85,9 @@ public class CategoryControllerTest {
 
     @Test
     public void testUpdateCategoryChildren() throws Exception {
-        UpdateChildrenRequest request = new UpdateChildrenRequest();
         when(categoryService.updateCategoryChildren(any(UpdateChildrenRequest.class)))
-                .thenReturn(new ResponseEntity<>(new ApiResponse("Enfants mis à jour avec succès", true), HttpStatus.OK));
+                .thenReturn(
+                        new ResponseEntity<>(new ApiResponse("Enfants mis à jour avec succès", true), HttpStatus.OK));
 
         mockMvc.perform(put("/api/categories/update-children")
                 .contentType("application/json")
@@ -102,10 +100,11 @@ public class CategoryControllerTest {
     @Test
     public void testDeleteCategory() throws Exception {
         Long categoryId = 1L;
-        when(categoryService.deleteCategory(categoryId)).thenReturn(new ResponseEntity<>(new ApiResponse("Supprimé avec succès", true), HttpStatus.OK));
+        when(categoryService.deleteCategory(categoryId))
+                .thenReturn(new ResponseEntity<>(new ApiResponse("Supprimé avec succès", true), HttpStatus.OK));
 
         mockMvc.perform(delete("/api/categories/{id}", categoryId))
-               .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         verify(categoryService, times(1)).deleteCategory(categoryId);
     }
