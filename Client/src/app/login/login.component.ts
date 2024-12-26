@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthServiceService } from '../services/auth.service';
+import { AuthServiceService } from '../services/auth.service.spec.ts';
+import { catchError, of } from 'rxjs';
+import { Route, Router } from '@angular/router';
+import { Utilisateur } from '../core/models/Utilisateur';
 
 @Component({
   selector: 'app-login',
@@ -7,13 +10,54 @@ import { AuthServiceService } from '../services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = '';
   password: string = '';
+  errorMessage: string = '';
 
-  constructor(private authService: AuthServiceService) {}
+  constructor(
+    private authService: AuthServiceService,
+    private router: Router
+  ) {}
   onSubmit() {
-    console.log('email:', this.email);
-    console.log('mdps :', this.password);
-    this.authService.login(this.email, this.password);
+    this.errorMessage = '';
+    console.log("Nom d'utilisateur:", this.username);
+    console.log('Mot de passe:', this.password);
+
+    this.authService
+      .login(this.username, this.password)
+      .pipe(
+        catchError((error) => {
+          this.handleError(error);
+          return of(null);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          const token = response?.headers.get('Authorization')?.split(' ')[1];
+          if (token) {
+            sessionStorage.setItem('token', token);
+            console.log('voila le token ' + token);
+            console.log('voila la reponse ' + response.body);
+
+            const utilisateur = new Utilisateur(response.body as Utilisateur);
+            console.log('Utilisateur connecté :', utilisateur);
+
+            this.authService.setLoginStatus(true);
+
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur de connexion:', err);
+        },
+      });
+  }
+
+  private handleError(error: any): void {
+    if (error.status === 401) {
+      this.errorMessage = "Nom d'utilisateur ou mot de passe incorrect.";
+    } else {
+      this.errorMessage = 'Une erreur est survenue, veuillez réessayer.';
+    }
   }
 }

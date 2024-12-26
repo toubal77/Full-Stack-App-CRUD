@@ -6,12 +6,21 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
 import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list-categories', pathMatch: 'full' }, // redirection par defaut
   { path: 'list-categories', component: ListCategoriesComponent },
-  { path: 'create-categorie', component: CreateCategoryComponent },
-  { path: 'edit-categorie/:id', component: CreateCategoryComponent },
+  {
+    path: 'create-categorie',
+    component: CreateCategoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-categorie/:id',
+    component: CreateCategoryComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'contact', component: ContactComponent },
   { path: 'swagger', component: SwaggerViewerComponent },
   { path: 'login', component: LoginComponent },

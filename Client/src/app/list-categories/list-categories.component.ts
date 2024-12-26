@@ -10,17 +10,26 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryService } from '../services/category.service';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+import { AuthServiceService } from '../services/auth.service';
 
 @Component({
   selector: 'app-list-categories',
   templateUrl: './list-categories.component.html',
-  styleUrls: ['./list-categories.component.scss']
+  styleUrls: ['./list-categories.component.scss'],
 })
 export class ListCategoriesComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['Nom', 'Parent', 'Date_Creation', 'Enfant', 'Racine', 'actions'];
+  displayedColumns: string[] = [
+    'Nom',
+    'Parent',
+    'Date_Creation',
+    'Enfant',
+    'Racine',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<Category>([]);
   msgError: any;
   originalData: any[] = [];
+  isLoggedIn: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,12 +37,21 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private categoryService: CategoryService,
+    private authService: AuthServiceService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.refresh();
+    this.checkToken();
+  }
+
+  checkToken() {
+    this.authService.isLoggedIn$.subscribe((status) => {
+      this.isLoggedIn = status;
+    });
+    console.log(this.isLoggedIn);
   }
 
   ngAfterViewInit() {
@@ -51,7 +69,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   openSearchDialog() {
     const dialogRef = this.dialog.open(SearchDialogComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.dataSource.data = result;
       }
@@ -74,7 +92,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
       error: (error) => {
         console.error('Erreur lors du chargement des catégories: ', error);
         this.msgError = 'Erreur lors du chargement des catégories';
-      }
+      },
     });
   }
 
@@ -85,7 +103,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   deleteCategory(row: Category): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const id = row.id;
 
@@ -95,7 +113,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
             this.snackBar.open(response.message, 'Fermer', {
               duration: 4000,
               horizontalPosition: 'right',
-              verticalPosition: 'top'
+              verticalPosition: 'top',
             });
           },
           error: (error) => {
@@ -103,9 +121,9 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
             this.snackBar.open(this.msgError, 'Fermer', {
               duration: 3000,
               horizontalPosition: 'right',
-              verticalPosition: 'top'
+              verticalPosition: 'top',
             });
-          }
+          },
         });
       }
     });

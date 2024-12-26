@@ -21,6 +21,8 @@
         <a class="nav-link" routerLink="/">Contact</a>
       </li>
     </ul>
-    <button class="btn-login" (click)="Login()">Se connecter</button>
+    <button class="btn-login" (click)="loginOrLogout()">
+      {{ isLoggedIn ? "Se déconnecter" : "Se connecter" }}
+    </button>
   </div>
 </nav>
