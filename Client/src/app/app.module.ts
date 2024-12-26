@@ -17,19 +17,18 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { Page404Component } from './layout/page-404/page-404.component';
 import { CreateCategoryComponent } from './create-category/create-category.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
-import { DatePipe } from '@angular/common';
+import { TokenInterceptor } from './Config-http/TokenInterceptor';
+import { ErrorInterceptor } from './Config-http/ErrorInterceptor';
+import { LoginComponent } from './login/login.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -42,33 +41,32 @@ import { DatePipe } from '@angular/common';
     ConfirmDialogComponent,
     SearchDialogComponent,
     ContactComponent,
-    SwaggerViewerComponent
+    SwaggerViewerComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     MatTableModule,
     MatIconModule,
     MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatTooltipModule,
     MatSortModule,
     MatCardModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
     MatPaginatorModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
-  providers: [DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' } 
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
