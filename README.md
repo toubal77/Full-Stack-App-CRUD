@@ -2,7 +2,8 @@
 
 ## Description
 
-Ce projet est une application web construite avec Angular pour le frontend et Spring Boot pour le backend. L'authentification est gérée via Keycloak. L'application tourne dans un environnement Docker.
+Ce projet constitue un système de gestion de catégories développé dans le cadre d'un projet de l'UE Full Stack pour le Master « Génie de l'Informatique Logicielle » de l'année universitaire 2024-2025. L'objectif est de concevoir une application web en utilisant Angular pour le frontend et Spring Boot pour le backend, le tout orchestré via Docker et sécurisé par Keycloak pour l'authentification.
+L'application permet de gérer les catégories en offrant des fonctionnalités d'ajout, de modification, de suppression, de gestion des sous-catégories et de visualisation, accessibles uniquement aux utilisateurs authentifiés. Keycloak prend en charge l'authentification et les autorisations, avec un accès administrateur via les identifiants par défaut admin/admin, tandis qu'un mode anonyme est disponible pour la consultation des catégories.
 
 ## Fonctionnalités
 
@@ -90,8 +91,6 @@ La documentation interactive des API est disponible via Swagger à l'adresse sui
 ## Auteurs
 
 - **Zine-Eddine TOUBAL** - _Développeur Full Stack_
-- **Elies LARBI** - _Développeur Full Stack_
+- **Elias LARBI** - _Développeur Full Stack_
 
 ---
-
-N'hésitez pas à apporter des améliorations et à poser des questions sur ce projet !
