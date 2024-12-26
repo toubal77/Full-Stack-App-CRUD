@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Utilisateur } from '../core/models/Utilisateur';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,18 @@ import { Utilisateur } from '../core/models/Utilisateur';
 export class AuthServiceService {
   private apiUrl = '/api/auth';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
+
+  private isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  isLoggedIn$ = this.isLoggedIn.asObservable();
+
+  private hasToken(): boolean {
+    return !!sessionStorage.getItem('token');
+  }
+
+  setLoginStatus(isLoggedIn: boolean) {
+    this.isLoggedIn.next(isLoggedIn);
+  }
 
   login(username: string, password: string) {
     const headers = new HttpHeaders({
@@ -19,26 +31,15 @@ export class AuthServiceService {
       .set('username', username)
       .set('password', password);
 
-    return this.http
-      .post(this.apiUrl + '/login', body.toString(), {
-        headers,
-        observe: 'response',
-      })
-      .subscribe((response) => {
-        const token = response.headers.get('Authorization')?.split(' ')[1];
-        if (token) {
-          sessionStorage.setItem('token', token);
-          console.log('voila le token ' + token);
-          console.log('voila la reponse ' + response.body);
-          const utilisateur = new Utilisateur(response.body as Utilisateur);
-          console.log('Utilisateur connecté :', utilisateur);
-          this.router.navigate(['/']);
-        }
-      });
+    return this.http.post(this.apiUrl + '/login', body.toString(), {
+      headers,
+      observe: 'response',
+    });
   }
 
   logout() {
     sessionStorage.removeItem('token');
+    this.setLoginStatus(false);
   }
 
   getToken(): string | null {

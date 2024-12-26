@@ -1,66 +1,112 @@
 <section class="content">
-    <div class="container mt-5">
-    <h2 class="text-center mb-4">{{ isEditMode ? 'Modifier la Catégorie' : 'Ajouter une Catégorie' }}</h2>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">
+      {{ isEditMode ? "Modifier la Catégorie" : "Ajouter une Catégorie" }}
+    </h2>
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div *ngIf="notificationMessage" class="alert alert-success mt-3">
-                {{ notificationMessage }}
-            </div>
-            <form (ngSubmit)="editCategory()" class="shadow p-4 bg-light rounded">
-                <div class="form-group">
-                    <label for="categoryName">Nom de la Catégorie:</label>
-                    <input type="text" id="categoryName" [(ngModel)]="newCategory.name" name="categoryName" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" [(ngModel)]="newCategory.ifRacine" name="isRoot">
-                        Cette catégorie est une racine
-                    </label>
-                </div>
-
-                <div class="form-group" *ngIf="!newCategory.ifRacine">
-                    <label for="parentCategory">Choisir un Parent:</label>
-                    <select 
-                        id="parentCategory" 
-                        [(ngModel)]="newCategory.parent" 
-                        name="parentCategory" 
-                        class="form-control" 
-                        [ngModelOptions]="{standalone: true}">
-                        <option *ngFor="let category of categories" [ngValue]="category" [disabled]="isParent(category)">
-                            {{ category.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block">{{ isEditMode ? 'Modifier la Catégorie' : 'Enregistrer' }}</button>
-            </form>
+      <div class="col-md-8">
+        <div *ngIf="notificationMessage" class="alert alert-success mt-3">
+          {{ notificationMessage }}
         </div>
+        <form
+          (ngSubmit)="isEditMode ? editCategory() : createCategory()"
+          class="shadow p-4 bg-light rounded"
+        >
+          <div class="form-group">
+            <label for="categoryName">Nom de la Catégorie:</label>
+            <input
+              type="text"
+              id="categoryName"
+              [(ngModel)]="newCategory.name"
+              name="categoryName"
+              class="form-control"
+              required
+            />
+          </div>
 
+          <div class="form-group">
+            <label>
+              <input
+                type="checkbox"
+                [(ngModel)]="newCategory.ifRacine"
+                name="isRoot"
+              />
+              Cette catégorie est une racine
+            </label>
+          </div>
 
-    <div class="cnt-childrens col-md-8">
+          <div class="form-group" *ngIf="!newCategory.ifRacine">
+            <label for="parentCategory">Choisir un Parent:</label>
+            <select
+              id="parentCategory"
+              [(ngModel)]="newCategory.parent"
+              name="parentCategory"
+              class="form-control"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <option
+                *ngFor="let category of categories"
+                [ngValue]="category"
+                [disabled]="isParent(category)"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            {{ isEditMode ? "Modifier la Catégorie" : "Enregistrer" }}
+          </button>
+        </form>
+      </div>
+
+      <div *ngIf="isEditMode" class="cnt-childrens col-md-8">
         <h4 class="text-center">Enfants de la Catégorie</h4>
         <ul class="list-group mb-4">
-            <li *ngFor="let child of newCategory.childrens" class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="font-weight-bold">{{ child.name }}</span>
-                <div>
-                    <button class="btn btn-danger btn-sm" (click)="deleteChild(child)">Supprimer</button>
-                </div>
-            </li>
+          <li
+            *ngFor="let child of newCategory.childrens"
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <span class="font-weight-bold">{{ child.name }}</span>
+            <div>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="deleteChild(child)"
+              >
+                Supprimer
+              </button>
+            </div>
+          </li>
         </ul>
 
         <form (ngSubmit)="addChild()" class="shadow p-3 bg-light rounded">
-            <div class="form-group">
-                <label for="childCategory">Choisir un Enfant à Ajouter:</label>
-                <select id="childCategory" [(ngModel)]="selectedChild" name="childCategory" class="form-control" required>
-                    <option *ngFor="let child of categories" [ngValue]="child" [disabled]="isChildDisabledOrParant(child)">
-                        {{ child.name }}
-                    </option>
-                </select>
-            </div>          
-            <button type="submit" class="btn btn-success btn-block" [disabled]="selectedChild == null" >Ajouter l'Enfant</button>
+          <div class="form-group">
+            <label for="childCategory">Choisir un Enfant à Ajouter:</label>
+            <select
+              id="childCategory"
+              [(ngModel)]="selectedChild"
+              name="childCategory"
+              class="form-control"
+              required
+            >
+              <option
+                *ngFor="let child of categories"
+                [ngValue]="child"
+                [disabled]="isChildDisabledOrParant(child)"
+              >
+                {{ child.name }}
+              </option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-success btn-block"
+            [disabled]="selectedChild == null"
+          >
+            Ajouter l'Enfant
+          </button>
         </form>
+      </div>
     </div>
-    </div>
-</div>
+  </div>
 </section>

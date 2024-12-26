@@ -15,12 +15,14 @@
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/">Nos API</a>
+        <a class="nav-link" routerLink="/swagger">Nos API</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/">Contact</a>
+        <a class="nav-link" routerLink="/contact">Contact</a>
       </li>
     </ul>
-    <button class="btn-login" (click)="Login()">Se connecter</button>
+    <button class="btn-login" (click)="loginOrLogout()">
+      {{ isLoggedIn ? "Se déconnecter" : "Se connecter" }}
+    </button>
   </div>
 </nav>

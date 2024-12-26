@@ -19,11 +19,17 @@ import { Page404Component } from './layout/page-404/page-404.component';
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
+import { DatePipe } from '@angular/common';
 import { TokenInterceptor } from './Config-http/TokenInterceptor';
 import { ErrorInterceptor } from './Config-http/ErrorInterceptor';
 import { LoginComponent } from './login/login.component';
@@ -49,6 +55,11 @@ import { MatInputModule } from '@angular/material/input';
     MatTableModule,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatTooltipModule,
     MatSortModule,
     MatCardModule,
@@ -64,6 +75,8 @@ import { MatInputModule } from '@angular/material/input';
     BrowserAnimationsModule,
   ],
   providers: [
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
