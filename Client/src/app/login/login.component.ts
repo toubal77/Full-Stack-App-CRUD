@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthServiceService } from '../services/auth.service.spec.ts';
 import { catchError, of } from 'rxjs';
 import { Route, Router } from '@angular/router';
 import { Utilisateur } from '../core/models/Utilisateur';
+import { AuthServiceService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthServiceService,
     private router: Router
-  ) {}
+  ) { }
   onSubmit() {
     this.errorMessage = '';
     console.log("Nom d'utilisateur:", this.username);

@@ -29,12 +29,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
-import { DatePipe } from '@angular/common';
 import { TokenInterceptor } from './Config-http/TokenInterceptor';
 import { ErrorInterceptor } from './Config-http/ErrorInterceptor';
 import { LoginComponent } from './login/login.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -48,7 +46,7 @@ import { MatInputModule } from '@angular/material/input';
     SearchDialogComponent,
     ContactComponent,
     SwaggerViewerComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -72,14 +70,14 @@ import { MatInputModule } from '@angular/material/input';
     AppRoutingModule,
     MatPaginatorModule,
     FormsModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
