@@ -9,9 +9,9 @@ import { Category } from '../core/models/Category';
 })
 export class CategoryService {
 
-  private apiUrl = '/api/categories';
+  private apiUrl = 'http://localhost:8080/api/categories';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   createCategory(category: any): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(this.apiUrl, category);
@@ -35,15 +35,15 @@ export class CategoryService {
 
   deleteCategory(id: number): Observable<ApiResponse> {
     return this.http.delete<ApiResponse>(`${this.apiUrl}/${id}`);
-  }  
+  }
 
   filterCategories(isRacine: Boolean, startDate: string | null, endDate: string | null, childCount: number | null): Observable<Category[]> {
     let params = new HttpParams();
     if (startDate) {
-        params = params.set('startDate', startDate);
+      params = params.set('startDate', startDate);
     }
     if (endDate) {
-        params = params.set('endDate', endDate);
+      params = params.set('endDate', endDate);
     }
 
     if (childCount) {

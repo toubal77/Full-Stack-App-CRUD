@@ -5,12 +5,14 @@ import { Utilisateur } from '../core/models/Utilisateur';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthServiceService {
-  private apiUrl = '/api/auth';
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:8080/api/auth';
+
+  constructor(private http: HttpClient) { }
+
 
   private isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
   isLoggedIn$ = this.isLoggedIn.asObservable();
@@ -24,17 +26,11 @@ export class AuthServiceService {
   }
 
   login(username: string, password: string) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-    });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
     const body = new HttpParams()
       .set('username', username)
       .set('password', password);
-
-    return this.http.post(this.apiUrl + '/login', body.toString(), {
-      headers,
-      observe: 'response',
-    });
+    return this.http.post(this.apiUrl + '/login', body.toString(), { headers, observe: 'response' });
   }
 
   logout() {

@@ -56,7 +56,7 @@ public class CategoryController {
 
     @PutMapping("/update-children")
     public ResponseEntity<ApiResponse> updateCategoryChildren(@RequestBody UpdateChildrenRequest request) {
-        return categoryService.updateCategoryChildren(request);    
+        return categoryService.updateCategoryChildren(request);
     }
 
     @DeleteMapping("/{id}")
@@ -75,7 +75,7 @@ public class CategoryController {
             List<Category> categories;
 
             if (startDate == null && endDate == null) {
-            	if (isRacine == null) {
+                if (isRacine == null) {
                     // Si isRacine est indéfini, recherchez uniquement par nbrChildrens
                     categories = categoryRepository.findByNbrChildrens(childCount);
                 } else {
@@ -91,48 +91,47 @@ public class CategoryController {
             } else {
                 categories = categoryRepository.findByFilters(isRacine, startDate, endDate, childCount);
             }
-            
+
             List<ResponseDTO> responseDTOs = new ArrayList<>();
 
             for (Category category : categories) {
                 ParentDTO parentDTO = null;
                 if (category.getParent() != null) {
                     Category parent = category.getParent();
-                    parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(), parent.isIfRacine(), parent.getNbrChildrends());
+                    parentDTO = new ParentDTO(parent.getId(), parent.getName(), parent.getCreationDate(),
+                            parent.isIfRacine(), parent.getNbrChildrends());
                 }
-                
+
                 List<Category> childrens = category.getChildren();
                 List<ChildDTO> childDTOs = new ArrayList<>();
 
                 for (Category child : childrens) {
                     ChildDTO childDTO = new ChildDTO(
-                        child.getId(),
-                        child.getName(),
-                        child.getCreationDate(),
-                        child.isIfRacine(),
-                        child.getNbrChildrends()
-                    );
+                            child.getId(),
+                            child.getName(),
+                            child.getCreationDate(),
+                            child.isIfRacine(),
+                            child.getNbrChildrends());
                     childDTOs.add(childDTO);
                 }
-                
+
                 ResponseDTO responseDTO = new ResponseDTO(
-                	    category.getId(),
-                	    category.getName(),
-                	    category.getCreationDate(),
-                	    category.isIfRacine(),
-                	    parentDTO,
-                	    childDTOs,
-                	    category.getNbrChildrends()
-                	);
+                        category.getId(),
+                        category.getName(),
+                        category.getCreationDate(),
+                        category.isIfRacine(),
+                        parentDTO,
+                        childDTOs,
+                        category.getNbrChildrends());
 
                 responseDTOs.add(responseDTO);
             }
-            
+
             return ResponseEntity.ok(responseDTOs);
         } catch (Exception e) {
             logger.error("Erreur lors du filtrage des catégories", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("Erreur lors du filtrage des catégories"+ e.toString(), false));
+                    .body(new ApiResponse("Erreur lors du filtrage des catégories" + e.toString(), false));
         }
     }
 
