@@ -28,13 +28,10 @@ export class HeaderComponent implements OnInit {
 
   loginOrLogout() {
     if (this.isLoggedIn) {
-      sessionStorage.removeItem('token');
-      this.isLoggedIn = false;
-      this.authService.setLoginStatus(false);
+      this.authService.logout();
       this.router.navigate(['/login']);
     } else {
       this.router.navigate(['/login']);
-      this.authService.setLoginStatus(true);
     }
   }
 }
