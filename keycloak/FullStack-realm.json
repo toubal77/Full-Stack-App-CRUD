@@ -2591,5 +2591,47 @@
     },
     "clientPolicies": {
         "policies": []
-    }
+    },
+    "users": [
+        {
+            "username": "admin",
+            "firstName": "admin",
+            "lastName": "account",
+            "email": "admin@gmail.com",
+            "enabled": true,
+            "emailVerified": true,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "admin",
+                    "temporary": false
+                }
+            ],
+            "clientRoles": {
+                "fullstack-client-id": [
+                    "admin"
+                ]
+            }
+        },
+        {
+            "username": "user",
+            "firstName": "user",
+            "lastName": "account",
+            "email": "user@gmail.com",
+            "enabled": true,
+            "emailVerified": true,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "user",
+                    "temporary": false
+                }
+            ],
+            "clientRoles": {
+                "fullstack-client-id": [
+                    "user"
+                ]
+            }
+        }
+    ]
 }
