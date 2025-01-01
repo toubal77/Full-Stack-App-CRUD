@@ -218,12 +218,37 @@ public class CategoryService {
             return ResponseEntity.badRequest().body(new ApiResponse("ID invalide", false));
         }
 
-        if (categoryRepository.existsById(id)) {
-            categoryRepository.deleteById(id);
-            return ResponseEntity.ok(new ApiResponse("Catégorie supprimée avec succès", true));
-        } else {
+        Optional<Category> categoryOpt = categoryRepository.findById(id);
+        if (!categoryOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse("Catégorie non trouvée pour suppression", false));
+        }
+
+        Category categoryToDelete = categoryOpt.get();
+
+        try {
+            if (categoryToDelete.isIfRacine()) {
+                List<Category> children = categoryToDelete.getChildren();
+
+                for (Category child : children) {
+                    child.setParent(null);
+                    child.setIfRacine(true);
+                    categoryRepository.save(child);
+                }
+            } else {
+                Category parentCategory = categoryToDelete.getParent();
+                if (parentCategory != null) {
+                    parentCategory.setNbrChildrends(parentCategory.getNbrChildrends() - 1);
+                    categoryRepository.save(parentCategory);
+                }
+            }
+
+            categoryRepository.delete(categoryToDelete);
+
+            return ResponseEntity.ok(new ApiResponse("Catégorie supprimée avec succès", true));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("Erreur lors de la suppression : " + e.getMessage(), false));
         }
     }
 }

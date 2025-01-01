@@ -148,22 +148,12 @@
                         "client": {
                             "realm-management": [
                                 "view-authorization",
-                                "impersonation",
-                                "manage-events",
                                 "view-clients",
-                                "manage-clients",
-                                "query-realms",
-                                "query-users",
-                                "manage-realm",
-                                "realm-admin",
-                                "manage-authorization",
                                 "view-identity-providers",
                                 "query-clients",
                                 "query-groups",
                                 "view-events",
                                 "view-realm",
-                                "manage-identity-providers",
-                                "manage-users",
                                 "view-users"
                             ],
                             "broker": [
@@ -173,8 +163,6 @@
                                 "view-applications",
                                 "view-consent",
                                 "view-groups",
-                                "manage-account-links",
-                                "manage-consent",
                                 "view-profile"
                             ]
                         }

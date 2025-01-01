@@ -10,6 +10,7 @@ $error-background: $background-light;
 
 .content {
   padding: 20px;
+  padding-top: 80px;
 
   .block-header {
     margin-bottom: 20px;
@@ -138,10 +139,10 @@ $error-background: $background-light;
 
   .right-header {
     display: flex;
-    align-items: center; 
-    
+    align-items: center;
+
     button {
-      margin-left: 10px; 
+      margin-left: 10px;
     }
   }
 }
@@ -157,29 +158,29 @@ $error-background: $background-light;
 
 .filters {
   background-color: #f9f9f9;
-  padding: 20px; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  margin-bottom: 20px; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .filters label {
   display: block;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   font-weight: 600;
 }
 
 .filters input[type="date"],
 .filters input[type="number"],
 .filters input[type="checkbox"] {
-  margin-left: 10px; 
+  margin-left: 10px;
   padding: 5px;
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
   width: auto;
 }
 
 .filters input[type="checkbox"] {
-  width: auto; 
-  margin-left: 0; 
+  width: auto;
+  margin-left: 0;
 }

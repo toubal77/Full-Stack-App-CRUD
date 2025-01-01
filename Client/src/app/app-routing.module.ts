@@ -7,6 +7,8 @@ import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
+import { AdminRoleGuard } from './guards/admin-role.guard';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list-categories', pathMatch: 'full' }, // redirection par defaut
@@ -14,12 +16,16 @@ const routes: Routes = [
   {
     path: 'create-categorie',
     component: CreateCategoryComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminRoleGuard],
   },
   {
     path: 'edit-categorie/:id',
     component: CreateCategoryComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent,
   },
   { path: 'contact', component: ContactComponent },
   { path: 'swagger', component: SwaggerViewerComponent },
@@ -32,4 +38,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

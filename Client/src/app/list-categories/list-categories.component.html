@@ -8,45 +8,23 @@
         <div class="card">
           <div class="body">
             <div class="table-responsive">
-              <div
-                class="materialTableHeader d-flex justify-content-between align-items-center"
-              >
+              <div class="materialTableHeader d-flex justify-content-between align-items-center">
                 <div class="left-header">
                   <h2><strong>Categories</strong></h2>
-                  <input
-                    placeholder="Recherche par nom"
-                    type="text"
-                    #filter
-                    (input)="filterData(filter.value)"
-                    class="browser-default search-field"
-                    aria-label="Search box"
-                  />
+                  <input placeholder="Recherche par nom" type="text" #filter (input)="filterData(filter.value)"
+                    class="browser-default search-field" aria-label="Search box" />
                 </div>
                 <div class="right-header d-flex">
-                  <button
-                    *ngIf="isLoggedIn"
-                    mat-mini-fab
-                    color="primary"
-                    aria-label="Add"
-                    (click)="navigateToCreateCategory()"
-                  >
+                  <button *ngIf="isLoggedIn && hasAdminRole" mat-mini-fab color="primary" aria-label="Add"
+                    (click)="navigateToCreateCategory()">
                     <mat-icon class="col-white">add</mat-icon>
                   </button>
-                  <button
-                    mat-mini-fab
-                    color="primary"
-                    aria-label="Refresh"
-                    (click)="refresh()"
-                  >
+                  <button mat-mini-fab color="primary" aria-label="Refresh" (click)="refresh()">
                     <mat-icon class="col-white">refresh</mat-icon>
                   </button>
                 </div>
               </div>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="openSearchDialog()"
-              >
+              <button mat-raised-button color="primary" (click)="openSearchDialog()">
                 Ouvrir le formulaire de recherche
               </button>
               <mat-table [dataSource]="dataSource" matSort class="mat-cell">
@@ -63,7 +41,7 @@
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">{{
                     row.parent ? row.parent.name : "Aucun"
-                  }}</mat-cell>
+                    }}</mat-cell>
                   <!-- Affiche 'Aucun' si pas de parent -->
                 </ng-container>
 
@@ -73,7 +51,7 @@
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">{{
                     row.creationDate | date : "shortDate"
-                  }}</mat-cell>
+                    }}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Enfant">
@@ -82,7 +60,7 @@
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">{{
                     row.nbrChildrens
-                  }}</mat-cell>
+                    }}</mat-cell>
                   <!-- Affiche le nombre d'enfants -->
                 </ng-container>
 
@@ -92,56 +70,36 @@
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">{{
                     row.ifRacine ? "Oui" : "Non"
-                  }}</mat-cell>
+                    }}</mat-cell>
                   <!-- Affiche 'Oui' ou 'Non' -->
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                   <mat-cell *matCellDef="let row">
-                    <button
-                      *ngIf="isLoggedIn"
-                      mat-icon-button
-                      color="primary"
-                      (click)="editCategory(row)"
-                    >
+                    <button *ngIf="isLoggedIn && hasAdminRole" mat-icon-button color="primary"
+                      (click)="editCategory(row)">
                       <mat-icon class="col-white">edit</mat-icon>
                     </button>
-                    <button
-                      *ngIf="isLoggedIn"
-                      mat-icon-button
-                      color="accent"
-                      (click)="deleteCategory(row)"
-                    >
+                    <button *ngIf="isLoggedIn && hasAdminRole" mat-icon-button color="accent"
+                      (click)="deleteCategory(row)">
                       <mat-icon class="col-white">delete</mat-icon>
                     </button>
                   </mat-cell>
                 </ng-container>
 
-                <mat-header-row
-                  *matHeaderRowDef="displayedColumns"
-                ></mat-header-row>
-                <mat-row
-                  *matRowDef="let row; columns: displayedColumns"
-                ></mat-row>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
               </mat-table>
 
-              <div
-                *ngIf="!msgError && dataSource.data.length === 0"
-                class="no-results"
-              >
+              <div *ngIf="!msgError && dataSource.data.length === 0" class="no-results">
                 <div class="no-results-container">
                   <p>Aucune catégorie, liste vide</p>
                 </div>
               </div>
 
-              <mat-paginator
-                #paginator
-                [length]="dataSource ? dataSource.data.length : 0"
-                [pageIndex]="0"
-                [pageSize]="5"
-                [pageSizeOptions]="[5, 10, 25, 100]"
-              >
+              <mat-paginator #paginator [length]="dataSource ? dataSource.data.length : 0" [pageIndex]="0"
+                [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
               </mat-paginator>
             </div>
           </div>

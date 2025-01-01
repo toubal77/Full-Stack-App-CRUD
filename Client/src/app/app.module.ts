@@ -33,6 +33,7 @@ import { TokenInterceptor } from './Config-http/TokenInterceptor';
 import { ErrorInterceptor } from './Config-http/ErrorInterceptor';
 import { LoginComponent } from './login/login.component';
 import { DatePipe } from '@angular/common';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DatePipe } from '@angular/common';
     SearchDialogComponent,
     ContactComponent,
     SwaggerViewerComponent,
-    LoginComponent
+    LoginComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import { catchError, of } from 'rxjs';
 import { Route, Router } from '@angular/router';
 import { Utilisateur } from '../core/models/Utilisateur';
 import { AuthServiceService } from '../services/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +19,16 @@ export class LoginComponent {
     private authService: AuthServiceService,
     private router: Router
   ) { }
+
+  getRolesFromToken(token: string): string[] {
+    const decodedToken: any = jwtDecode(token);
+    console.log(decodedToken);
+    const roles = decodedToken?.resource_access?.['realm-management']?.roles || [];
+    return roles;
+  }
+
   onSubmit() {
     this.errorMessage = '';
-    console.log("Nom d'utilisateur:", this.username);
-    console.log('Mot de passe:', this.password);
 
     this.authService
       .login(this.username, this.password)
@@ -36,11 +43,14 @@ export class LoginComponent {
           const token = response?.headers.get('Authorization')?.split(' ')[1];
           if (token) {
             sessionStorage.setItem('token', token);
-            console.log('voila le token ' + token);
-            console.log('voila la reponse ' + response.body);
+
+            const roles = this.getRolesFromToken(token);
+            console.log('Rôles de l\'utilisateur :', roles);
+            const adminRole = roles.includes('realm-admin');
+            console.log('adminRole ', adminRole);
+            sessionStorage.setItem('adminRole', adminRole.toString());
 
             const utilisateur = new Utilisateur(response.body as Utilisateur);
-            console.log('Utilisateur connecté :', utilisateur);
 
             this.authService.setLoginStatus(true);
 

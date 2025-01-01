@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit {
   loginOrLogout() {
     if (this.isLoggedIn) {
       this.authService.logout();
+      sessionStorage.removeItem('adminRole');
+      sessionStorage.removeItem('token');
       this.router.navigate(['/login']);
     } else {
       this.router.navigate(['/login']);

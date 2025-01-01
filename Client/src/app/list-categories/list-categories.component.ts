@@ -30,6 +30,7 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
   msgError: any;
   originalData: any[] = [];
   isLoggedIn: boolean = false;
+  hasAdminRole: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -40,18 +41,25 @@ export class ListCategoriesComponent implements OnInit, AfterViewInit {
     private authService: AuthServiceService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refresh();
     this.checkToken();
+    this.checkRole();
   }
 
   checkToken() {
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
     });
-    console.log(this.isLoggedIn);
+  }
+
+  checkRole() {
+    this.authService.isAdmin$.subscribe((status) => {
+      console.log("get role admin ", status);
+      this.hasAdminRole = status;
+    });
   }
 
   ngAfterViewInit() {

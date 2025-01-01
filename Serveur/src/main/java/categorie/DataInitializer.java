@@ -29,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
             electronics = categoryRepository.save(electronics);
 
             Category telephone = new Category("Téléphones", electronics, false);
+            electronics.setNbrChildrends(electronics.getNbrChildrends() + 1);
             telephone.setParent(electronics);
             electronics.setChildren(telephone);
 
