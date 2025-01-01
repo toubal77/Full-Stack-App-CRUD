@@ -35,14 +35,14 @@ L'application permet de gérer les catégories en offrant des fonctionnalités d
 
    Cela lancera les services suivants :
 
-   - **Angular** : Frontend accessible via [http://localhost:4200](http://localhost:4200)
+   - **Angular** : Frontend accessible via [http://localhost:4201](http://localhost:4201)
    - **Spring Boot** : Backend accessible via [http://localhost:8080](http://localhost:8080)
    - **Swagger** : Documentation des API accessible via [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-   - **Keycloak** : Service d'authentification, accessible via [http://localhost:8081](http://localhost:8081)
+   - **Keycloak** : Service d'authentification, accessible via [http://localhost:8082](http://localhost:8082)
 
 3. **Configuration Keycloak** :
 
-   - Accédez à Keycloak à [http://localhost:8081](http://localhost:8081) avec les identifiants suivants :
+   - Accédez à Keycloak à [http://localhost:8082](http://localhost:8082) avec les identifiants suivants :
      - **Nom d'utilisateur** : `admin`
      - **Mot de passe** : `admin`
 
