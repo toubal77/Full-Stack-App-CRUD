@@ -39,14 +39,14 @@
             <label for="parentCategory">Choisir un Parent:</label>
             <select
               id="parentCategory"
-              [(ngModel)]="newCategory.parent"
+              [(ngModel)]="newCategory.parentId"
               name="parentCategory"
               class="form-control"
               [ngModelOptions]="{ standalone: true }"
             >
               <option
                 *ngFor="let category of categories"
-                [ngValue]="category"
+                [ngValue]="category.id"
                 [disabled]="isParent(category)"
               >
                 {{ category.name }}

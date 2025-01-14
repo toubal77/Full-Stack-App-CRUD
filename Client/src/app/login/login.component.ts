@@ -53,7 +53,7 @@ export class LoginComponent {
             const utilisateur = new Utilisateur(response.body as Utilisateur);
 
             this.authService.setLoginStatus(true);
-
+            this.authService.setHasAdminRole(adminRole); 
             this.router.navigate(['/']);
           }
         },

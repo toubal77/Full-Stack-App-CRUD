@@ -1,93 +1,30 @@
-nav.navbar {
-  background-color: #f8f9fa;
-  position: fixed;
-  height: 56px;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-  .container-fluid {
-    display: flex;
-   justify-content: space-between;
-     align-items: center;
-    height: 100%;
-    padding: 0 15px;
-
-    .brand {
-   .navbar-brand {
-        font-size: 29px !important;
-       color: #1663a6;
-        font-weight: 500;
-      text-decoration: none;
-
-          &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .navbar-nav {
-      display: flex;
-    align-items: center; 
-      margin: 0; 
-      padding: 0; 
-      list-style-type: none; 
-      display: contents;
-      .nav-item {
-        margin-right: 2rem; 
- 
-         .nav-link {
-          text-decoration: none;
-          color: #333; 
-          transition: color 0.2s;
- 
-           &:hover {
-            color: #1663a6; 
-          }
-        }
-      }
-    }
-
-    .btn-login {
-      background-color: #1663a6;
-     color: white;
-      border: none;
-     padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-     &:hover {
-        background-color: darken(#1663a6, 10%);
-      }
-    }
-  }
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 767px) {
-  nav.navbar {
-     .container-fluid {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px 15px;
-      .navbar-nav {
-        flex-direction: column;
-        margin-top: 10px;
-    .nav-item {
-          margin-right: 0;
-          margin-bottom: 0.5rem;
-        }
-      }
-      .btn-login {
-        width: 100%; 
-        margin-top: 10px;
-      }
-    }
-  }
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 5rem;
 }
 
+.navbar .navbar-nav .nav-link {
+  font-size: 1rem;
+  margin-right: 3rem;
+}
 
-.scrolled {
-  background-color: #ffffff; 
-  transition: background-color 0.3s;
+.navbar .btn-primary {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .navbar .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar .btn-primary {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
 }

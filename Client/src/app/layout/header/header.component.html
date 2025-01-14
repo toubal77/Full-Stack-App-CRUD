@@ -1,28 +1,39 @@
-<nav class="navbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <div class="brand">
-      <a class="navbar-brand" routerLink="/">
-        <span class="app-name">MyApp</span>
-      </a>
-    </div>
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/">Categories</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/create-categorie"
-          >Ajoute une categorie</a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/swagger">Nos API</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/contact">Contact</a>
-      </li>
-    </ul>
-    <button class="btn-login" (click)="loginOrLogout()">
-      {{ isLoggedIn ? "Se déconnecter" : "Se connecter" }}
+    <a class="navbar-brand" routerLink="/">
+      <span class="app-name">Gestion des catégories</span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/create-categorie"
+            >Ajoute une categorie</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/swagger">Nos API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact">Contact</a>
+        </li>
+      </ul>
+      <button class="btn btn-primary" (click)="loginOrLogout()">
+        {{ isLoggedIn ? "Se déconnecter" : "Se connecter" }}
+      </button>
+    </div>
   </div>
 </nav>

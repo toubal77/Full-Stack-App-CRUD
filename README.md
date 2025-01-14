@@ -23,8 +23,8 @@ L'application permet de gérer les catégories en offrant des fonctionnalités d
 1. Clonez ce dépôt sur votre machine :
 
    ```bash
-   git clone git@github.com:toubal77/CRUD-Full-Stack-App.git
-   cd CRUD-Full-Stack-App
+   git clone https://github.com/toubal77/Full-Stack-App-CRUD.git
+   cd CRUD-Full-Stack
    ```
 
 2. **Démarrez les containers Docker** :
@@ -54,9 +54,9 @@ L'application permet de gérer les catégories en offrant des fonctionnalités d
 
 ## Structure du Projet
 
-- **Frontend (Angular)** : Application Angular sous `/client`, tournant sur le port 4200.
+- **Frontend (Angular)** : Application Angular sous `/client`, tournant sur le port 4201.
 - **Backend (Spring Boot)** : API Spring Boot sous `/serveur`, tournant sur le port 8080.
-- **Keycloak** : Serveur d'authentification tournant sur le port 8081.
+- **Keycloak** : Serveur d'authentification tournant sur le port 8082.
 
 ## Technologies Utilisées
 

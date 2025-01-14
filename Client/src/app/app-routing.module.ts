@@ -7,7 +7,6 @@ import { ContactComponent } from './contact/contact.component';
 import { SwaggerViewerComponent } from './swagger-viewer/swagger-viewer.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
-import { AdminRoleGuard } from './guards/admin-role.guard';
 import { ErrorPageComponent } from './error-page/error-page.component';
 
 const routes: Routes = [
@@ -16,7 +15,7 @@ const routes: Routes = [
   {
     path: 'create-categorie',
     component: CreateCategoryComponent,
-    canActivate: [AdminRoleGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'edit-categorie/:id',

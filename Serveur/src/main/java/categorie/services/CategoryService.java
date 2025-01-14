@@ -227,14 +227,15 @@ public class CategoryService {
         Category categoryToDelete = categoryOpt.get();
 
         try {
-            if (categoryToDelete.isIfRacine()) {
+            if (categoryToDelete.isIfRacine() || (categoryToDelete.getChildren() != null && !categoryToDelete.getChildren().isEmpty())) {
                 List<Category> children = categoryToDelete.getChildren();
-
                 for (Category child : children) {
                     child.setParent(null);
                     child.setIfRacine(true);
                     categoryRepository.save(child);
                 }
+                categoryToDelete.setChildren(null);
+                categoryRepository.save(categoryToDelete);
             } else {
                 Category parentCategory = categoryToDelete.getParent();
                 if (parentCategory != null) {

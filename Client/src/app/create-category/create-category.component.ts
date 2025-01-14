@@ -23,6 +23,7 @@ export class CreateCategoryComponent implements OnInit {
     childrens: [],
     ifRacine: false,
     parent: null,
+    parentId: null,
     nbrChildrens: 0
   };
   categories: Category[] = [];
@@ -39,6 +40,7 @@ export class CreateCategoryComponent implements OnInit {
         childrens: [],
         ifRacine: false,
         parent: null,
+        parentId: null,
         nbrChildrens: 0
       };
     }
@@ -67,8 +69,10 @@ export class CreateCategoryComponent implements OnInit {
   loadCategory(id: number): void {
     this.categoryService.getCategoryById(id).subscribe((category) => {
       this.newCategory = category;
+      this.newCategory.parentId = this.newCategory.parent ? this.newCategory.parent.id : null;
     });
   }
+  
 
   loadData(): void {
     this.categoryService.getAllCategories().subscribe({
@@ -106,6 +110,7 @@ export class CreateCategoryComponent implements OnInit {
           childrens: [],
           ifRacine: false,
           parent: null,
+          parentId: null,
           nbrChildrens: 0
         };
         //load la liste des categories parent apres l'ajout d'une nouvelle categorie
@@ -133,27 +138,21 @@ export class CreateCategoryComponent implements OnInit {
 
   editCategory(): void {
     const categoryId = this.newCategory.id;
-    let categoryUpdate: any;
+    let categoryUpdate: any = {
+      name: this.newCategory.name,
+      ifRacine: this.newCategory.ifRacine,
+    };
     if (this.newCategory.childrens && this.newCategory.childrens.length > 0) {
-      categoryUpdate = {
-        name: this.newCategory.name,
-        ifRacine: this.newCategory.ifRacine,
-      };
+      categoryUpdate.childrens = this.newCategory.childrens;
     }
     if (this.newCategory.ifRacine) {
-      categoryUpdate = {
-        name: this.newCategory.name,
-        ifRacine: true,
-      };
-    }
-    if (this.newCategory.parent != null && !this.newCategory.ifRacine) {
-      categoryUpdate = {
-        name: this.newCategory.name,
-        parent: {
-          id: this.newCategory.parent.id,
-        },
-        ifRacine: this.newCategory.ifRacine,
-      };
+      categoryUpdate.parent = null;
+    } else {
+      if (this.newCategory.parentId) {
+        categoryUpdate.parent = { id: this.newCategory.parentId };
+      } else if (this.newCategory.parent) {
+        categoryUpdate.parent = { id: this.newCategory.parent.id };
+      }
     }
     this.categoryService.updateCategory(categoryId, categoryUpdate).subscribe({
       next: (response) => {
@@ -171,7 +170,7 @@ export class CreateCategoryComponent implements OnInit {
         });
       }
     });
-  }
+  }  
 
   addChild(): void {
     if (this.selectedChild) {

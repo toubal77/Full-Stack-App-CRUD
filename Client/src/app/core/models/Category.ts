@@ -5,6 +5,7 @@ export class Category {
   childrens: Category[];
   ifRacine: boolean;
   parent: Category | null;
+  parentId!: number | null;
   nbrChildrens: number;
 
   constructor(
@@ -14,6 +15,7 @@ export class Category {
     childrens: Category[],
     ifRacine: boolean,
     parent: Category | null,
+    parentId: number | null,
     nbrChildrens: number
   ) {
     this.id = id;
@@ -22,6 +24,7 @@ export class Category {
     this.childrens = childrens;
     this.ifRacine = ifRacine;
     this.parent = parent;
+    this.parent?.id;
     this.nbrChildrens = nbrChildrens;
   }
 }
